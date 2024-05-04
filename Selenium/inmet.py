@@ -1,30 +1,42 @@
-# Fontes: https://github.com/rafaelpsdv/INMET-Scrap/blob/main/spider_inmet.py
-
+# Fontes: 
+# https://github.com/rafaelpsdv/INMET-Scrap/blob/main/spider_inmet.py
+# https://repost.aws/knowledge-center/iot-core-publish-mqtt-messages-python
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
 from pyvirtualdisplay import Display
-import time
-import random
+
+from awscrt import io, mqtt, auth, http
+from awsiot import mqtt_connection_builder
 import pandas as pd
+import time as t
+import json
+
+ENDPOINT = "ayskvuv5aj6jn-ats.iot.eu-central-1.amazonaws.com"
+CLIENT_ID = "Lange-AWS-Selenium"
+PATH_TO_CERTIFICATE = "INMET-WebCrawler-certificate.pem.crt"
+PATH_TO_PRIVATE_KEY = "INMET-WebCrawler-private.pem.key"
+PATH_TO_AMAZON_ROOT_CA_1 = "AmazonRootCA1.pem"
+
+TOPIC = "$aws/things/Lange-INMET-WebCrawler/shadow/update/documents"
+
 
 display = Display(visible=0, size=(1024, 768))
 display.start()
 
-
 options = webdriver.ChromeOptions()
 options.add_argument('--no-sandbox')
 options.add_argument('--disable-gpu')
-
 driver = webdriver.Chrome(options=options)
 driver.set_page_load_timeout(90)
 
 driver.implicitly_wait(6)
 driver.get("https://tempo.inmet.gov.br/TabelaEstacoes/A883")
-time.sleep(5)
+t.sleep(5)
 
 titulo = driver.find_elements(By.CLASS_NAME, 'titulo-data')
+textoTitulo = titulo[0].text.splitlines()
 
 data = driver.find_elements(By.XPATH, '//tbody/tr/td[1]')
 hora = driver.find_elements(By.XPATH, '//tbody/tr/td[2]')
@@ -70,5 +82,41 @@ for i in range(len(hora)):
 	datas.append(temporary_data)
 
 jsonText = pd.DataFrame(datas).to_json(orient = 'columns')
-print(jsonText)
+
+print(textoTitulo[0])
+print(textoTitulo[1])
+
+
+textoToAWS = "{\"state\":{\"reported\":"
+textoToAWS = textoToAWS + jsonText
+textoToAWS = textoToAWS + ",\"estacao\":\"" + textoTitulo[1] + "\","
+textoToAWS = textoToAWS + "\"data\":\"" + textoTitulo[0] + "\"}"
+textoToAWS = textoToAWS + "}"
+
+event_loop_group = io.EventLoopGroup(1)
+host_resolver = io.DefaultHostResolver(event_loop_group)
+client_bootstrap = io.ClientBootstrap(event_loop_group, host_resolver)
+mqtt_connection = mqtt_connection_builder.mtls_from_path(
+            endpoint=ENDPOINT,
+            cert_filepath=PATH_TO_CERTIFICATE,
+            pri_key_filepath=PATH_TO_PRIVATE_KEY,
+            client_bootstrap=client_bootstrap,
+            ca_filepath=PATH_TO_AMAZON_ROOT_CA_1,
+            client_id=CLIENT_ID,
+            clean_session=False,
+            keep_alive_secs=6
+            )
+print("Connecting to {} with client ID '{}'...".format(ENDPOINT, CLIENT_ID))
+# Make the connect() call
+connect_future = mqtt_connection.connect()
+# Future.result() waits until a result is available
+connect_future.result()
+print("Connected!")
+# Publish message to server desired number of times.
+print('Begin Publish')
+mqtt_connection.publish(topic=TOPIC, payload=textoToAWS, qos=mqtt.QoS.AT_LEAST_ONCE)
+t.sleep(0.1)
+print('Publish End')
+disconnect_future = mqtt_connection.disconnect()
+disconnect_future.result()
 
