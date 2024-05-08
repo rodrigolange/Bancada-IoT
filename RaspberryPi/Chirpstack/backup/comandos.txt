@@ -1,0 +1,218 @@
+sudo raspi-config
+sudo apt update
+sudo apt raspi-config
+sudo apt raspi-conf
+sudo raspi-config
+sudo date -s "feb 19 18:35"
+sudo date -s "2024-02-19 18:37"
+sudo apt update
+sudo apt upgrade
+sudo apt install -y git gcc g++ clang
+sudo apt install python3
+sudo apt autoremove
+git clone https://github.com/Elecrow-RD/LR1302_loraWAN/LR1302_HAL
+git clone https://github.com/Elecrow-RD/LR1302_loraWAN.git
+ls
+cd LR1302_loraWAN/
+ls
+cd LR1302_HAL/
+ls
+cd ..
+mv LR1302_loraWAN/LR1302_HAL/sx1302_hal .
+ls
+cd sx1302_hal/
+ls
+make
+exit
+sudo poweroff
+sudo raspi-config
+sudo reboot
+pwd
+sudo poweroff
+ifconfig
+iwconfig
+sudo raspi-config
+iwconfig
+iwconfig wlan0 up
+iwconfig wlan0 
+iwconfig --help
+sudo iwconfig wlan0
+sudo raspi-config
+sudo iwconfig wlan0
+sudo reboot
+sudo raspi-config
+sudo iwconfig wlan0
+sudo poweroff
+sudo reboot
+sudo apt update
+sudo apt upgrade
+exit
+sudo apt update
+sudo apt install     mosquitto     mosquitto-clients     redis-server     redis-tools     postgresql
+sudo -u postgres psql
+sudo apt install apt-transport-https dirmngr
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 1CE2AFD36DBCCA00
+sudo echo "deb https://artifacts.chirpstack.io/packages/4.x/deb stable main" | sudo tee /etc/apt/sources.list.d/chirpstack.list
+sudo apt update
+sudo apt install chirpstack-gateway-bridge
+apt install chirpstack
+sudo apt install chirpstack
+sudo systemctl enable chirpstack-gateway-bridge
+sudo systemctl enable chirpstack
+sudo systemctl start chirpstack
+sudo journalctl -f -n 100 -u chirpstack
+sudo nano /etc/chirpstack
+sudo nano /etc/chirpstack/chirpstack.toml
+sudo system restart chirpstack
+sudo service chirpstack restart
+ls
+cd sx1302_hal/
+ls
+cd util_chip_id/
+ls
+./chip_id
+sudo ../packet_forwarder/lora_pkt_fwd 
+cd ..
+ls
+ls tools
+sudo sh tools/reset_lgw.sh 
+sudo sh tools/reset_lgw.sh start
+sudo util_chip_id/chip_id 
+cd tools/
+ls
+sudo ../util_chip_id/chip_id 
+chmod 777 reset_lgw.sh 
+sudo ../util_chip_id/chip_id 
+cd ..
+ls
+cd packet_forwarder/
+ls
+nano readme.md 
+cp global_conf.json.sx1250.US915 global_conf.json
+./lora_pkt_fwd -c global_conf.json
+chmod 777 reset_lgw.sh 
+sudo ./lora_pkt_fwd -c global_conf.json
+sudo service mosquitto start
+sudo nano /etc/mosquitto/mosquitto.conf 
+tail -f /var/log/mosquitto/mosquitto.log 
+sudo tail -f /var/log/mosquitto/mosquitto.log 
+sudo nano /etc/mosquitto/mosquitto.conf 
+sudo service mosquitto restart
+sudo ./lora_pkt_fwd -c global_conf.json
+sudo nano /etc/chirpstack-gateway-bridge/chirpstack-gateway-bridge.toml
+sudo service chirpstack-gateway-bridge start
+sudo ./lora_pkt_fwd -c global_conf.json
+ls
+cat global_conf.json.jamie 
+ls
+nano global_conf.json
+sudo ./lora_pkt_fwd -c global_conf.json
+sudo ./lora_pkt_fwd -c global_conf.json &
+ps fax
+kill -9 7015
+ps fax
+ls
+ps fax | grep pack
+ps fax | grep forwarder
+exit
+sudo journalctl -f -n 100 -u chirpstack
+ls
+cd sx1302_hal/
+ls
+cd packet_forwarder/
+ls
+sudo nano global_conf.json
+sudo nano /etc/chirpstack/chirpstack.toml
+sudo nano /etc/chirpstack-gateway-bridge/chirpstack-gateway-bridge.toml
+sudo service chirpstack-gateway-bridge restart
+sudo reboot
+sudo journalctl -f -n 100 -u chirpstack
+cd sx1302_hal/packet_forwarder/
+ls
+sudo ./lora_pkt_fwd -c global_conf.json
+pwd
+sudo ./lora_pkt_fwd -c global_conf.json
+ls
+sudo nano /etc/chirpstack-gateway-bridge/chirpstack-gateway-bridge.toml
+sudo ./lora_pkt_fwd -c global_conf.json
+sudo nano global_conf.json
+sudo ./lora_pkt_fwd -c global_conf.json
+sudo nano global_conf.json
+ls
+cat global_conf.json.sx1250.US915
+sudo nano global_conf.json
+sudo ./lora_pkt_fwd -c global_conf.json
+sudo nano global_conf.json
+nano global_conf.json.sx1250.US915
+sudo nano global_conf.json
+sudo ./lora_pkt_fwd -c global_conf.json
+pwd
+sudo nano global_conf.json
+sudo ./lora_pkt_fwd -c global_conf.json
+sudo nano global_conf.json
+sudo ./lora_pkt_fwd -c global_conf.json
+sudo nano global_conf.json
+sudo ./lora_pkt_fwd -c global_conf.json
+sudo service lorapktfwd stop
+sudo service lorapktfwd start
+exit
+cd /etc/init.d/
+ls
+sudo nano lorapktfwd
+sudo chmod +x lorapktfwd 
+cd 
+sudo service lorapktfwd start
+sudo update-rc.d lorapktfwd default
+sudo /etc/init.d/lorapktfwd start
+sudo update-rc.d /etc/init.d/lorapktfwd default
+sudo update-rc.d /etc/init.d/lorapktfwd defaults
+sudo update-rc.d lorapktfwd defaults
+sudo nano /etc/init.d/lorapktfwd
+sudo /etc/init.d/lorapktfwd start
+sudo /etc/init.d/lorapktfwd stop
+ps fax
+killall lora_pkt_fwd
+sudo killall lora_pkt_fwd
+sudo nano /etc/init.d/lorapktfwd 
+sudo /etc/init.d/lorapktfwd stop
+sudo /etc/init.d/lorapktfwd start
+sudo /etc/init.d/lorapktfwd stop
+sudo nano /etc/init.d/lorapktfwd 
+sudo /etc/init.d/lorapktfwd start
+ps fax
+sudo /etc/init.d/lorapktfwd stop
+ps fax
+cat .bash_history 
+sudo journalctl -f -n 100 -u chirpstack
+cat .bash_history 
+sudo nano /etc/chirpstack-gateway-bridge/chirpstack-gateway-bridge.toml
+sudo nano /etc/chirpstack/chirpstack.toml
+sudo service chirpstack restart
+sudo service chirpstack-gateway-bridge restart
+exit
+sudo service lorapktfwd stop
+sudo service lorapktfwd start
+sudo reboot
+sudo service lorapktfwd start
+exit
+sudo service lorapktfwd start
+sudo service lorapktfwd stop
+sudo service lorapktfwd start
+ps fax
+sudo chkconfig --add lorapktfwd 
+sudo chkconfig
+sudo apt install chkconfig
+sudo chkconfig --add lorapktfwd 
+sudo update-rd.d lorapktfwd defaults
+sudo update-rc.d lorapktfwd defaults
+sudo ls /etc/rc*.d
+sudo ls /etc/rc*.d | grep lora
+sudo ls /etc/rc*.d | grep quitto
+sudo service --status-all
+sudo chkconfig lorapktfwd on
+sudo apt remove insserv
+cat .bash_history | grep systemctl
+sudo systemctl enable lorapktfwd
+sudo nano /etc/init.d/lorapktfwd 
+sudo systemctl enable lorapktfwd
+

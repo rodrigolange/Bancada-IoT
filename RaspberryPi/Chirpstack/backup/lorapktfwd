@@ -1,0 +1,27 @@
+#!/bin/bash
+### BEGIN INIT INFO
+# Provides:          lorapkdfwd
+# Required-Start:    $all
+# Required-Stop:
+# Default-Start:     2 3 4 5
+# Default-Stop:
+# Short-Description: Inicia lora packet forwarder
+### END INIT INFO
+
+case "$1" in
+	start)
+		echo "Starting packet forwarder"
+		# run the program you want to start
+		cd /home/pi/sx1302_hal/packet_forwarder
+		sudo ./lora_pkt_fwd -c global_conf.json > /dev/null &
+	;;
+	stop)
+		echo "Stopping packet forwarder"
+		# end the program you want to stop
+		killall lora_pkt_fwd
+	;;
+	*)
+		echo "Usage: /etc/init.d/lorapktfwd {start|stop}"
+		exit 1
+		;;
+esac
