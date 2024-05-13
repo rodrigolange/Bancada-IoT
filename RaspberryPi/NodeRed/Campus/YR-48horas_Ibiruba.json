@@ -1,0 +1,300 @@
+[
+    {
+        "id": "3e958d2cf7e0fd38",
+        "type": "tab",
+        "label": "YR",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "7fe2eeb2e4756c06",
+        "type": "inject",
+        "z": "3e958d2cf7e0fd38",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "10800",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 130,
+        "y": 80,
+        "wires": [
+            [
+                "dbd3b5c90377b5e5"
+            ]
+        ]
+    },
+    {
+        "id": "dbd3b5c90377b5e5",
+        "type": "weather data",
+        "z": "3e958d2cf7e0fd38",
+        "yrconfig": "722cbfb244fe8f4d",
+        "latitude": "-28.6532",
+        "longitude": "-53.1135",
+        "forecastType": "compact",
+        "name": "",
+        "x": 310,
+        "y": 80,
+        "wires": [
+            [
+                "e8e8583fa762bdef"
+            ]
+        ]
+    },
+    {
+        "id": "e8e8583fa762bdef",
+        "type": "json",
+        "z": "3e958d2cf7e0fd38",
+        "name": "",
+        "property": "payload",
+        "action": "obj",
+        "pretty": false,
+        "x": 470,
+        "y": 80,
+        "wires": [
+            [
+                "bd4cbda7e6ad5547"
+            ]
+        ]
+    },
+    {
+        "id": "bd4cbda7e6ad5547",
+        "type": "function",
+        "z": "3e958d2cf7e0fd38",
+        "name": "getPrevisaoPrecipitacao",
+        "func": "let dados = msg.payload[\"properties\"][\"timeseries\"];\nlet msg1 = {};\n\n\nlet precipitacao = [];\nlet precipitacaoSum = 0;\n\nfor (var i = 0; i < 48; i++) {\n    let d = dados[i][\"data\"][\"next_1_hours\"][\"details\"][\"precipitation_amount\"];\n    precipitacao.push(d);\n    precipitacaoSum = precipitacaoSum + parseFloat(d);\n}\n\n//msg.payload = dados[0][\"data\"][\"next_1_hours\"][\"details\"];\nmsg.payload = precipitacaoSum;\n\nmsg1.payload = precipitacao;\n\nreturn [msg, msg1];",
+        "outputs": 2,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 670,
+        "y": 80,
+        "wires": [
+            [
+                "d2abc1d6da6e9669",
+                "c2c96001d166dc71",
+                "9c84ae9833b438cf"
+            ],
+            [
+                "9a9dea4909a349a0"
+            ]
+        ]
+    },
+    {
+        "id": "d2abc1d6da6e9669",
+        "type": "debug",
+        "z": "3e958d2cf7e0fd38",
+        "name": "debug 17",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 940,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "9a9dea4909a349a0",
+        "type": "debug",
+        "z": "3e958d2cf7e0fd38",
+        "name": "debug 18",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 940,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "c2c96001d166dc71",
+        "type": "ui_text",
+        "z": "3e958d2cf7e0fd38",
+        "group": "928ecfe42f97af68",
+        "order": 7,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Previsão precipitação acumulada 48h",
+        "format": "{{msg.payload}}",
+        "layout": "col-center",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 1030,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "28eebd1e78cdf94e",
+        "type": "debug",
+        "z": "3e958d2cf7e0fd38",
+        "name": "debug 19",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1040,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "129c46e29f4b2f0f",
+        "type": "mqtt out",
+        "z": "3e958d2cf7e0fd38",
+        "name": "AWS LOGO! 230RCE",
+        "topic": "$aws/things/Logo230RCE/shadow/update/documents",
+        "qos": "0",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "b90e1ab.b432fe8",
+        "x": 1080,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "9c84ae9833b438cf",
+        "type": "function",
+        "z": "3e958d2cf7e0fd38",
+        "name": "Precip. acumulada para AWS",
+        "func": "let dados = parseInt(msg.payload);\ndados = dados * 10;\n\nlet hexDados = dados.toString(16);\n\nlet mensagem = \"{\\\"state\\\":{\\\"reported\\\":\";\nmensagem = mensagem + \"{\\\"AM..4:8-1\\\": \";\nmensagem = mensagem + hexDados;\nmensagem = mensagem + \"}}}\";\n\nmsg.payload = mensagem;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 820,
+        "y": 280,
+        "wires": [
+            [
+                "129c46e29f4b2f0f",
+                "28eebd1e78cdf94e"
+            ]
+        ]
+    },
+    {
+        "id": "d0e0652f111704e8",
+        "type": "ui_spacer",
+        "z": "3e958d2cf7e0fd38",
+        "name": "spacer",
+        "group": "928ecfe42f97af68",
+        "order": 2,
+        "width": 6,
+        "height": 1
+    },
+    {
+        "id": "9e4cca1c559263e1",
+        "type": "ui_spacer",
+        "z": "3e958d2cf7e0fd38",
+        "name": "spacer",
+        "group": "928ecfe42f97af68",
+        "order": 4,
+        "width": 6,
+        "height": 1
+    },
+    {
+        "id": "453e65d836e3c3f5",
+        "type": "ui_spacer",
+        "z": "3e958d2cf7e0fd38",
+        "name": "spacer",
+        "group": "928ecfe42f97af68",
+        "order": 6,
+        "width": 6,
+        "height": 1
+    },
+    {
+        "id": "722cbfb244fe8f4d",
+        "type": "yr-config",
+        "api": "https://api.met.no/weatherapi/locationforecast/2.0",
+        "debug": false
+    },
+    {
+        "id": "928ecfe42f97af68",
+        "type": "ui_group",
+        "name": "LOGO! 230RCE",
+        "tab": "b0e6f9b1ad0220c4",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "b90e1ab.b432fe8",
+        "type": "mqtt-broker",
+        "name": "AWS IoT Core",
+        "broker": "ayskvuv5aj6jn-ats.iot.eu-central-1.amazonaws.com",
+        "port": "8883",
+        "tls": "6227a848.b52f98",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": true,
+        "protocolVersion": "3",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "b0e6f9b1ad0220c4",
+        "type": "ui_tab",
+        "name": "LOGO 230RCE",
+        "icon": "dashboard",
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "6227a848.b52f98",
+        "type": "tls-config",
+        "name": "",
+        "cert": "",
+        "key": "",
+        "ca": "",
+        "certname": "1d65721100b045d1448faec7e20d52426231f814a70fb28bd5de4d1eed001faa-certificate.pem.crt",
+        "keyname": "1d65721100b045d1448faec7e20d52426231f814a70fb28bd5de4d1eed001faa-private.pem.key",
+        "caname": "AmazonRootCA1.pem",
+        "servername": "",
+        "verifyservercert": false,
+        "alpnprotocol": ""
+    }
+]

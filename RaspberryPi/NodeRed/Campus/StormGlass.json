@@ -1,0 +1,541 @@
+[
+    {
+        "id": "fef6b8e0.cf7ee8",
+        "type": "tab",
+        "label": "Dados Satélite",
+        "disabled": true,
+        "info": ""
+    },
+    {
+        "id": "d5dd717760f9aafc",
+        "type": "inject",
+        "z": "fef6b8e0.cf7ee8",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 320,
+        "y": 120,
+        "wires": [
+            [
+                "0610830cb216494c"
+            ]
+        ]
+    },
+    {
+        "id": "d10e3970a3429cf7",
+        "type": "http request",
+        "z": "fef6b8e0.cf7ee8",
+        "name": "",
+        "method": "GET",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "https://api.stormglass.io/v2/bio/point?lat=-28.6544996&lng=-53.109622&params=soilMoisture10cm,soilMoisture,soilTemperature,soilTemperature10cm&start={{{payload}}}&end={{{payload}}}",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "authType": "",
+        "x": 910,
+        "y": 80,
+        "wires": [
+            [
+                "5c07d390d6df39f1",
+                "e9815ddcdad04fbb"
+            ]
+        ]
+    },
+    {
+        "id": "0610830cb216494c",
+        "type": "function",
+        "z": "fef6b8e0.cf7ee8",
+        "name": "StormGlass",
+        "func": "const utcDate = new Date();\nmsg.payload = utcDate.toISOString();\n\nmsg.headers = {};\n//msg.headers['Authorization'] = 'fa26861e-42d0-11ee-a654-0242ac130002-fa268682-42d0-11ee-a654-0242ac130002'; \nmsg.headers['Authorization'] = '5b803a14-59dd-11ed-bce5-0242ac130002-5b803af0-59dd-11ed-bce5-0242ac130002';\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 510,
+        "y": 80,
+        "wires": [
+            [
+                "743a87ec2bebc4fc"
+            ]
+        ]
+    },
+    {
+        "id": "743a87ec2bebc4fc",
+        "type": "change",
+        "z": "fef6b8e0.cf7ee8",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "dataUTC",
+                "pt": "msg",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 710,
+        "y": 80,
+        "wires": [
+            [
+                "d10e3970a3429cf7"
+            ]
+        ]
+    },
+    {
+        "id": "12b011f1c566dd0a",
+        "type": "inject",
+        "z": "fef6b8e0.cf7ee8",
+        "name": "Intervalo de consulta dos dados",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "10800",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 240,
+        "y": 80,
+        "wires": [
+            [
+                "0610830cb216494c"
+            ]
+        ]
+    },
+    {
+        "id": "8183597ca76eaa84",
+        "type": "mysql",
+        "z": "fef6b8e0.cf7ee8",
+        "mydb": "cc212204f1de7ece",
+        "name": "Dados Satelite",
+        "x": 1120,
+        "y": 280,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "d0a7e7f35e8e0c56",
+        "type": "function",
+        "z": "fef6b8e0.cf7ee8",
+        "name": "",
+        "func": "msg.payload = '{\"hours\":[{\"soilMoisture\":{\"noaa\":0.3,\"sg\":0.3},\"soilMoisture10cm\":{\"noaa\":0.31,\"sg\":0.31},\"soilTemperature\":{\"noaa\":16.95,\"sg\":16.95},\"soilTemperature10cm\":{\"noaa\":16.67,\"sg\":16.67},\"time\":\"2023-08-24T22:00:00+00:00\"}],\"meta\":{\"cost\":1,\"dailyQuota\":10,\"end\":\"2023-08-24 22:56\",\"lat\":-28.6544996,\"lng\":-53.109622,\"params\":[\"soilMoisture10cm\",\"soilMoisture\",\"soilTemperature\",\"soilTemperature10cm\"],\"requestCount\":1,\"start\":\"2023-08-24 22:00\"}}';\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 340,
+        "y": 220,
+        "wires": [
+            [
+                "5c07d390d6df39f1"
+            ]
+        ]
+    },
+    {
+        "id": "1dbb4bcd0b0c5c39",
+        "type": "inject",
+        "z": "fef6b8e0.cf7ee8",
+        "name": "Inject dados teste",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 180,
+        "y": 220,
+        "wires": [
+            [
+                "d0a7e7f35e8e0c56"
+            ]
+        ]
+    },
+    {
+        "id": "5c07d390d6df39f1",
+        "type": "json",
+        "z": "fef6b8e0.cf7ee8",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 510,
+        "y": 220,
+        "wires": [
+            [
+                "dcf470f9fb85860a",
+                "077ce7db84f6410e"
+            ]
+        ]
+    },
+    {
+        "id": "dcf470f9fb85860a",
+        "type": "function",
+        "z": "fef6b8e0.cf7ee8",
+        "name": "SQL insert",
+        "func": "let msg1 = {};\nlet msg2 = {};\n\n\nlet dados = msg.payload;\n\nlet hours = dados[\"hours\"];\nhours = hours[0];\n\nlet soilMoisture = hours[\"soilMoisture\"];\nlet soilMoistureNOAA = soilMoisture[\"noaa\"];\n\n\nlet soilMoisture10cm = hours[\"soilMoisture10cm\"];\nlet soilMoisture10cmNOAA = soilMoisture10cm[\"noaa\"];\n\n\nlet soilTemperature = hours[\"soilTemperature\"];\nlet soilTemperatureNOAA = soilTemperature[\"noaa\"];\n\n\nlet soilTemperature10cm = hours[\"soilTemperature10cm\"];\nlet soilTemperature10cmNOAA = soilTemperature10cm[\"noaa\"];\n\nlet hora = Date.now();\n\nvar chart1 = [\n    {label: \"soilMoisture\", payload: soilMoistureNOAA, series: \"soilMoisture\"},\n    {label: \"soilMoisture10cm\", payload: soilMoisture10cmNOAA, series: \"soilMoisture10cm\"}\n];\nmsg1 = chart1;\n\nvar chart2 = [\n    {label: \"soilTemperature\", payload: soilTemperatureNOAA, series: \"soilTemperature\"},\n    {label: \"soilTemperature10cm\", payload: soilTemperature10cmNOAA, series: \"soilTemperature10cm\"}\n];\nmsg2 = chart2;\n\n\nlet comandoSQL = \"INSERT INTO dados (temperatura_solo, temperatura_solo_10cm, umidade_solo, umidade_solo_10cm) values (\";\ncomandoSQL = comandoSQL + soilTemperatureNOAA + \", \";\ncomandoSQL = comandoSQL + soilTemperature10cmNOAA + \", \";\ncomandoSQL = comandoSQL + soilMoistureNOAA + \", \";\ncomandoSQL = comandoSQL + soilMoisture10cmNOAA + \");\";\nmsg.topic = comandoSQL;\n\nreturn [msg, msg1, msg2];",
+        "outputs": 3,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 730,
+        "y": 320,
+        "wires": [
+            [
+                "8183597ca76eaa84"
+            ],
+            [
+                "72a1ad10413de5b1"
+            ],
+            [
+                "1ebf0692a19463fc"
+            ]
+        ]
+    },
+    {
+        "id": "72a1ad10413de5b1",
+        "type": "ui_chart",
+        "z": "fef6b8e0.cf7ee8",
+        "name": "",
+        "group": "0c2a1356a7b60e52",
+        "order": 2,
+        "width": 15,
+        "height": 5,
+        "label": "Umidade do Solo - NOAA",
+        "chartType": "line",
+        "legend": "true",
+        "xformat": "dd HH:mm",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": "7",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "86400",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 1090,
+        "y": 340,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "06587e44dbd60f4e",
+        "type": "ui_button",
+        "z": "fef6b8e0.cf7ee8",
+        "name": "",
+        "group": "0c2a1356a7b60e52",
+        "order": 3,
+        "width": 3,
+        "height": 1,
+        "passthru": false,
+        "label": "Clear All",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "[]",
+        "payloadType": "json",
+        "topic": "",
+        "topicType": "str",
+        "x": 720,
+        "y": 380,
+        "wires": [
+            [
+                "72a1ad10413de5b1",
+                "1ebf0692a19463fc"
+            ]
+        ]
+    },
+    {
+        "id": "1ebf0692a19463fc",
+        "type": "ui_chart",
+        "z": "fef6b8e0.cf7ee8",
+        "name": "",
+        "group": "0c2a1356a7b60e52",
+        "order": 1,
+        "width": 15,
+        "height": 5,
+        "label": "Temperatura do Solo - NOAA",
+        "chartType": "line",
+        "legend": "true",
+        "xformat": "dd HH:mm",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": "7",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "86400",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 1080,
+        "y": 380,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "e9815ddcdad04fbb",
+        "type": "debug",
+        "z": "fef6b8e0.cf7ee8",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1110,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "ad24a8ef9cbcb0c4",
+        "type": "mqtt out",
+        "z": "fef6b8e0.cf7ee8",
+        "name": "AWS StormGlass",
+        "topic": "$aws/things/lange-IoT-StormGlass/shadow/update/documents",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "b90e1ab.b432fe8",
+        "x": 1110,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "077ce7db84f6410e",
+        "type": "function",
+        "z": "fef6b8e0.cf7ee8",
+        "name": "Dados para AWS IoT Core",
+        "func": "var msgOut = {};\nvar dados = msg.payload;\nvar hora = Date.now();\n\n\nlet hours = dados[\"hours\"];\nhours = hours[0];\n\nlet soilMoisture = hours[\"soilMoisture\"];\nlet soilMoistureNOAA = soilMoisture[\"noaa\"];\n\nlet soilMoisture10cm = hours[\"soilMoisture10cm\"];\nlet soilMoisture10cmNOAA = soilMoisture10cm[\"noaa\"];\n\nlet soilTemperature = hours[\"soilTemperature\"];\nlet soilTemperatureNOAA = soilTemperature[\"noaa\"];\n\nlet soilTemperature10cm = hours[\"soilTemperature10cm\"];\nlet soilTemperature10cmNOAA = soilTemperature10cm[\"noaa\"];\n\nlet mensagem = \"{\\\"state\\\":{\\\"reported\\\":\";\nmensagem = mensagem.concat(\"{\");\n \nmensagem = mensagem.concat(\"\\\"soilMoistureNOAA\\\": \");\nmensagem = mensagem.concat(soilMoistureNOAA);\nmensagem = mensagem.concat(\",\");\n  \nmensagem = mensagem.concat(\"\\\"soilMoisture10cmNOAA\\\": \");\nmensagem = mensagem.concat(soilMoisture10cmNOAA);\nmensagem = mensagem.concat(\",\"); \n\nmensagem = mensagem.concat(\"\\\"soilTemperatureNOAA\\\": \");\nmensagem = mensagem.concat(soilTemperatureNOAA);\nmensagem = mensagem.concat(\",\"); \n\nmensagem = mensagem.concat(\"\\\"soilTemperature10cmNOAA\\\": \");\nmensagem = mensagem.concat(soilTemperature10cmNOAA);\n\nmensagem = mensagem + \"}}}\";\n\nmsg.payload = mensagem;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 780,
+        "y": 220,
+        "wires": [
+            [
+                "a7f50d5df4c5c55b",
+                "ad24a8ef9cbcb0c4"
+            ]
+        ]
+    },
+    {
+        "id": "a7f50d5df4c5c55b",
+        "type": "debug",
+        "z": "fef6b8e0.cf7ee8",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1110,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "3ac937fc62e11db2",
+        "type": "function",
+        "z": "fef6b8e0.cf7ee8",
+        "name": "Dados Teste para AWS",
+        "func": "var hora = Date.now();\n\nlet soilMoisture = 10;\nlet soilMoistureNOAA = 20;\n\nlet soilMoisture10cm = 30;\nlet soilMoisture10cmNOAA = 40;\n\nlet soilTemperature = 50;\nlet soilTemperatureNOAA = soilTemperature[\"noaa\"];\n\nlet soilTemperature10cm = 60;\nlet soilTemperature10cmNOAA = 70;\n\nmensagem = \"{\\\"state\\\":{\\\"reported\\\":\";\nmensagem = mensagem.concat(\"{\");\n\nmensagem = mensagem.concat(\"\\\"hora\\\": \");\nmensagem = mensagem.concat(String(hora));\nmensagem = mensagem.concat(\",\");\n  \nmensagem = mensagem.concat(\"\\\"soilMoisture\\\": \");\nmensagem = mensagem.concat(String(soilMoisture));\nmensagem = mensagem.concat(\",\");  \n  \nmensagem = mensagem.concat(\"\\\"soilMoistureNOAA\\\": \");\nmensagem = mensagem.concat(String(soilMoistureNOAA));\nmensagem = mensagem.concat(\",\");\n  \nmensagem = mensagem.concat(\"\\\"soilMoisture10cm\\\": \");\nmensagem = mensagem.concat(String(soilMoisture10cm));\nmensagem = mensagem.concat(\",\");\n  \nmensagem = mensagem.concat(\"\\\"soilMoisture10cmNOAA\\\": \");\nmensagem = mensagem.concat(String(soilMoisture10cmNOAA));\nmensagem = mensagem.concat(\",\"); \n \nmensagem = mensagem.concat(\"\\\"soilTemperature10cmNOAA\\\": \");\nmensagem = mensagem.concat(String(soilTemperature10cmNOAA));\n\nmensagem = mensagem + \"}}}\";\n\nmsg.payload = mensagem;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 750,
+        "y": 500,
+        "wires": [
+            [
+                "ad24a8ef9cbcb0c4"
+            ]
+        ]
+    },
+    {
+        "id": "f75fd99f93ddfaa2",
+        "type": "inject",
+        "z": "fef6b8e0.cf7ee8",
+        "name": "Inject dados teste - AWS",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 210,
+        "y": 500,
+        "wires": [
+            [
+                "3ac937fc62e11db2"
+            ]
+        ]
+    },
+    {
+        "id": "cc212204f1de7ece",
+        "type": "MySQLdatabase",
+        "name": "MySQL",
+        "host": "127.0.0.1",
+        "port": "3306",
+        "db": "dados_satelite",
+        "tz": "America/Sao_Paulo",
+        "charset": "UTF8"
+    },
+    {
+        "id": "0c2a1356a7b60e52",
+        "type": "ui_group",
+        "name": "Dados Satélite",
+        "tab": "0f496c211a063fdb",
+        "order": 1,
+        "disp": true,
+        "width": 15,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "b90e1ab.b432fe8",
+        "type": "mqtt-broker",
+        "name": "AWS IoT Core",
+        "broker": "ayskvuv5aj6jn-ats.iot.eu-central-1.amazonaws.com",
+        "port": "8883",
+        "tls": "6227a848.b52f98",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": true,
+        "protocolVersion": "3",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "0f496c211a063fdb",
+        "type": "ui_tab",
+        "name": "Dados Meteorológicos",
+        "icon": "dashboard",
+        "order": 1,
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "6227a848.b52f98",
+        "type": "tls-config",
+        "name": "",
+        "cert": "",
+        "key": "",
+        "ca": "",
+        "certname": "1d65721100b045d1448faec7e20d52426231f814a70fb28bd5de4d1eed001faa-certificate.pem.crt",
+        "keyname": "1d65721100b045d1448faec7e20d52426231f814a70fb28bd5de4d1eed001faa-private.pem.key",
+        "caname": "AmazonRootCA1.pem",
+        "servername": "",
+        "verifyservercert": false,
+        "alpnprotocol": ""
+    }
+]

@@ -1,0 +1,371 @@
+[
+    {
+        "id": "251971951bf65f5f",
+        "type": "tab",
+        "label": "OpenWeather",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "a0d5f1ce04da1f2d",
+        "type": "inject",
+        "z": "251971951bf65f5f",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "3600",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "1",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 110,
+        "y": 160,
+        "wires": [
+            [
+                "a582032b60b385f8"
+            ]
+        ]
+    },
+    {
+        "id": "a582032b60b385f8",
+        "type": "openweathermap",
+        "z": "251971951bf65f5f",
+        "name": "Tempo Ibirubá",
+        "wtype": "current",
+        "lon": "-53.0897",
+        "lat": "-28.6275",
+        "city": "",
+        "country": "",
+        "language": "en",
+        "x": 300,
+        "y": 160,
+        "wires": [
+            [
+                "23dafb527f18e834",
+                "2ec12ccf39ccbea9"
+            ]
+        ]
+    },
+    {
+        "id": "6b4051b4e32e5440",
+        "type": "comment",
+        "z": "251971951bf65f5f",
+        "name": "Dados OpenWeather",
+        "info": "23e316ccf3386edcf0c7e0a2776262c4\n\n-28.6275, -53.0897",
+        "x": 140,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "23dafb527f18e834",
+        "type": "function",
+        "z": "251971951bf65f5f",
+        "name": "Data Split",
+        "func": "var dados = msg.payload;\nvar msgLocal = {};\nvar msgTemperatura = {};\nvar msgPrecipitacao = {};\nvar msgUmidade = {};\nvar msgSunrise = {};\nvar msgSunset = {};\n\nvar local = dados[\"location\"];\nvar precipitacao = dados[\"rain\"];\nvar temperatura = dados[\"tempc\"];\nvar clima = dados[\"weather\"];\nvar umidade = dados[\"humidity\"];\nvar sunrise = dados[\"sunrise\"];\nvar sunset = dados[\"sunset\"];\n\nvar chart1 = [\n    { label: \"Temperatura\", payload: temperatura, series: \"Temperatura\"}\n];\nmsgTemperatura = chart1;\n\nvar chart2 = [\n    { label: \"Precipitação\", payload: precipitacao, series: \"Precipitação\" }\n];\nmsgPrecipitacao = chart2;\n\nvar chart3 = [\n    { label: \"Umidade do ar\", payload: umidade, series: \"Umidade do ar\" }\n];\nmsgUmidade = chart3;\n\nmsgLocal.payload = local;\nmsgSunrise.payload = sunrise;\nmsgSunset.payload = sunset;\nreturn [msgLocal, msgTemperatura, msgPrecipitacao, \n        msgUmidade, msgSunrise, msgSunset];\n",
+        "outputs": 6,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 480,
+        "y": 160,
+        "wires": [
+            [
+                "9e248e9734973b15"
+            ],
+            [
+                "8a15ff09a2637444"
+            ],
+            [
+                "67fb6a821aa68141"
+            ],
+            [
+                "c8b3f337fe7724cd"
+            ],
+            [
+                "e4e7c40a429e94f2"
+            ],
+            [
+                "09dd19abb7c59d7d"
+            ]
+        ]
+    },
+    {
+        "id": "9e248e9734973b15",
+        "type": "ui_text",
+        "z": "251971951bf65f5f",
+        "group": "86f8b97f3c0bfae3",
+        "order": 2,
+        "width": 7,
+        "height": 1,
+        "name": "",
+        "label": "Cidade",
+        "format": "{{msg.payload}}",
+        "layout": "col-center",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 940,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "8a15ff09a2637444",
+        "type": "ui_chart",
+        "z": "251971951bf65f5f",
+        "name": "",
+        "group": "86f8b97f3c0bfae3",
+        "order": 5,
+        "width": 13,
+        "height": 4,
+        "label": "Temperatura",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "604800",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 930,
+        "y": 180,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "67fb6a821aa68141",
+        "type": "ui_chart",
+        "z": "251971951bf65f5f",
+        "name": "",
+        "group": "86f8b97f3c0bfae3",
+        "order": 6,
+        "width": 13,
+        "height": 4,
+        "label": "Precipitação",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": true,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "604800",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 930,
+        "y": 220,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "c8b3f337fe7724cd",
+        "type": "ui_chart",
+        "z": "251971951bf65f5f",
+        "name": "",
+        "group": "86f8b97f3c0bfae3",
+        "order": 7,
+        "width": 13,
+        "height": 4,
+        "label": "Umidade",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "604800",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 940,
+        "y": 260,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "2ec12ccf39ccbea9",
+        "type": "debug",
+        "z": "251971951bf65f5f",
+        "name": "debug 12",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 500,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "8bde0cc085df32d5",
+        "type": "ui_text",
+        "z": "251971951bf65f5f",
+        "group": "86f8b97f3c0bfae3",
+        "order": 8,
+        "width": 6,
+        "height": 2,
+        "name": "",
+        "label": "Sunset",
+        "format": "{{msg.payload}}",
+        "layout": "col-center",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 940,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "6ed478dc5b443826",
+        "type": "ui_text",
+        "z": "251971951bf65f5f",
+        "group": "86f8b97f3c0bfae3",
+        "order": 10,
+        "width": 6,
+        "height": 2,
+        "name": "",
+        "label": "Sundown",
+        "format": "{{msg.payload}}",
+        "layout": "col-center",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 940,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "09dd19abb7c59d7d",
+        "type": "function",
+        "z": "251971951bf65f5f",
+        "name": "Unix Time to Date",
+        "func": "var unixTime = msg.payload;\n\nvar date = new Date(unixTime * 1000);\nvar timeString = date. toLocaleString();\n\nmsg.payload = timeString;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 750,
+        "y": 340,
+        "wires": [
+            [
+                "6ed478dc5b443826"
+            ]
+        ]
+    },
+    {
+        "id": "e4e7c40a429e94f2",
+        "type": "function",
+        "z": "251971951bf65f5f",
+        "name": "Unix Time to Date",
+        "func": "var unixTime = msg.payload;\n\nvar date = new Date(unixTime * 1000);\nvar timeString = date. toLocaleString();\n\nmsg.payload = timeString;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 750,
+        "y": 300,
+        "wires": [
+            [
+                "8bde0cc085df32d5"
+            ]
+        ]
+    },
+    {
+        "id": "86f8b97f3c0bfae3",
+        "type": "ui_group",
+        "name": "OpenWeather",
+        "tab": "25299980f1c41729",
+        "order": 1,
+        "disp": true,
+        "width": 13,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "25299980f1c41729",
+        "type": "ui_tab",
+        "name": "Clima",
+        "icon": "dashboard",
+        "disabled": false,
+        "hidden": false
+    }
+]

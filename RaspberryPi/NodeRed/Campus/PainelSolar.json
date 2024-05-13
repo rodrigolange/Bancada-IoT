@@ -1,0 +1,391 @@
+[
+    {
+        "id": "0d472f1f312b8c88",
+        "type": "tab",
+        "label": "Painel Solar",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "bdd87a213cf1e133",
+        "type": "ui_chart",
+        "z": "0d472f1f312b8c88",
+        "name": "",
+        "group": "21080c0996472665",
+        "order": 1,
+        "width": 15,
+        "height": 5,
+        "label": "Painel solar: tensão gerada",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "0",
+        "ymax": "7",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "604800",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 920,
+        "y": 80,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "309144e3d4457bc3",
+        "type": "mqtt in",
+        "z": "0d472f1f312b8c88",
+        "name": "IoT Core Painel Solar",
+        "topic": "$aws/things/lange-IoT-SensorPainelSolar/shadow/update/documents",
+        "qos": "0",
+        "datatype": "utf8",
+        "broker": "b90e1ab.b432fe8",
+        "nl": false,
+        "rap": false,
+        "inputs": 0,
+        "x": 140,
+        "y": 80,
+        "wires": [
+            [
+                "059f9953ef079962"
+            ]
+        ]
+    },
+    {
+        "id": "059f9953ef079962",
+        "type": "json",
+        "z": "0d472f1f312b8c88",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 310,
+        "y": 80,
+        "wires": [
+            [
+                "91b89594b2444894"
+            ]
+        ]
+    },
+    {
+        "id": "91b89594b2444894",
+        "type": "function",
+        "z": "0d472f1f312b8c88",
+        "name": "",
+        "func": "var dados = msg.payload;\nvar dadosState = dados['state'];\nvar dadosReported = dadosState['reported'];\n\nmsg.payload = dadosReported;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 460,
+        "y": 80,
+        "wires": [
+            [
+                "4e9b8c9c0f2651bb",
+                "8114052b134e3246",
+                "26ff3c88034e504d",
+                "4f1338bc864962aa"
+            ]
+        ]
+    },
+    {
+        "id": "4e9b8c9c0f2651bb",
+        "type": "function",
+        "z": "0d472f1f312b8c88",
+        "name": "Tensao",
+        "func": "var dados = msg.payload;\nvar tensao = dados['tensao'];\nmsg.payload = tensao;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 660,
+        "y": 80,
+        "wires": [
+            [
+                "bdd87a213cf1e133"
+            ]
+        ]
+    },
+    {
+        "id": "caa2a88e24028a0a",
+        "type": "ui_chart",
+        "z": "0d472f1f312b8c88",
+        "name": "",
+        "group": "21080c0996472665",
+        "order": 2,
+        "width": 15,
+        "height": 5,
+        "label": "Painel solar: temperatura",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "dd HH:mm",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "-15",
+        "ymax": "50",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "604800",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 930,
+        "y": 140,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "8114052b134e3246",
+        "type": "function",
+        "z": "0d472f1f312b8c88",
+        "name": "Temperatura",
+        "func": "var dados = msg.payload;\nvar temperatura = dados['temperatura'];\nmsg.payload = temperatura;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 670,
+        "y": 140,
+        "wires": [
+            [
+                "caa2a88e24028a0a",
+                "c87b288646da0efd"
+            ]
+        ]
+    },
+    {
+        "id": "6c8890c84c403ec9",
+        "type": "ui_chart",
+        "z": "0d472f1f312b8c88",
+        "name": "",
+        "group": "21080c0996472665",
+        "order": 3,
+        "width": 15,
+        "height": 5,
+        "label": "Painel solar: umidade solo",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "0",
+        "ymax": "2700",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "604800",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 920,
+        "y": 260,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "26ff3c88034e504d",
+        "type": "function",
+        "z": "0d472f1f312b8c88",
+        "name": "umidade solo",
+        "func": "var dados = msg.payload;\nvar umidadeSolo = dados['umidadeSolo'];\nmsg.payload = umidadeSolo;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 670,
+        "y": 260,
+        "wires": [
+            [
+                "6c8890c84c403ec9"
+            ]
+        ]
+    },
+    {
+        "id": "c87b288646da0efd",
+        "type": "ui_text",
+        "z": "0d472f1f312b8c88",
+        "group": "0c2a1356a7b60e52",
+        "order": 8,
+        "width": 6,
+        "height": 2,
+        "name": "",
+        "label": "Temperatura externa",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 940,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "4f1338bc864962aa",
+        "type": "function",
+        "z": "0d472f1f312b8c88",
+        "name": "SQL insert",
+        "func": "var dados = msg.payload;\n\nvar tensao = dados['tensao'];\nvar temperatura = dados['temperatura'];\nvar umidadeSolo = dados['umidadeSolo'];\n\nlet comandoSQL = \"INSERT INTO dados (tensao, temperatura, umidade_solo) values (\";\ncomandoSQL = comandoSQL + tensao + \", \";\ncomandoSQL = comandoSQL + temperatura + \", \";\ncomandoSQL = comandoSQL + umidadeSolo + \");\";\nmsg.topic = comandoSQL;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 670,
+        "y": 340,
+        "wires": [
+            [
+                "84c4e57ced4aaf41"
+            ]
+        ]
+    },
+    {
+        "id": "84c4e57ced4aaf41",
+        "type": "mysql",
+        "z": "0d472f1f312b8c88",
+        "mydb": "b8ee6e4d.ee49",
+        "name": "Dados Estação Meteorológica",
+        "x": 910,
+        "y": 340,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "21080c0996472665",
+        "type": "ui_group",
+        "name": "Estação Meteorológica",
+        "tab": "0f496c211a063fdb",
+        "order": 3,
+        "disp": true,
+        "width": 15,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "b90e1ab.b432fe8",
+        "type": "mqtt-broker",
+        "name": "AWS IoT Core",
+        "broker": "ayskvuv5aj6jn-ats.iot.eu-central-1.amazonaws.com",
+        "port": "8883",
+        "tls": "6227a848.b52f98",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": true,
+        "protocolVersion": "3",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "0c2a1356a7b60e52",
+        "type": "ui_group",
+        "name": "Dados Satélite",
+        "tab": "0f496c211a063fdb",
+        "order": 1,
+        "disp": true,
+        "width": 15,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "b8ee6e4d.ee49",
+        "type": "MySQLdatabase",
+        "name": "",
+        "host": "127.0.0.1",
+        "port": "3306",
+        "db": "dados_estacao_meteorologica",
+        "tz": "America/Sao_Paulo",
+        "charset": "UTF8"
+    },
+    {
+        "id": "0f496c211a063fdb",
+        "type": "ui_tab",
+        "name": "Dados Meteorológicos",
+        "icon": "dashboard",
+        "order": 1,
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "6227a848.b52f98",
+        "type": "tls-config",
+        "name": "",
+        "cert": "",
+        "key": "",
+        "ca": "",
+        "certname": "1d65721100b045d1448faec7e20d52426231f814a70fb28bd5de4d1eed001faa-certificate.pem.crt",
+        "keyname": "1d65721100b045d1448faec7e20d52426231f814a70fb28bd5de4d1eed001faa-private.pem.key",
+        "caname": "AmazonRootCA1.pem",
+        "servername": "",
+        "verifyservercert": false,
+        "alpnprotocol": ""
+    }
+]

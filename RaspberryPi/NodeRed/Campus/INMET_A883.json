@@ -1,0 +1,557 @@
+[
+    {
+        "id": "8f01f52760d57b75",
+        "type": "tab",
+        "label": "Estação A883 INMET",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "d8cf80fd3b8864d5",
+        "type": "mqtt in",
+        "z": "8f01f52760d57b75",
+        "name": "AWS IoT Core - INMET",
+        "topic": "$aws/things/Lange-INMET-WebCrawler/shadow/update/documents",
+        "qos": "0",
+        "datatype": "auto-detect",
+        "broker": "b90e1ab.b432fe8",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 120,
+        "y": 360,
+        "wires": [
+            [
+                "7f3e742addf18a01",
+                "642d0c0661e127f0"
+            ]
+        ]
+    },
+    {
+        "id": "7f3e742addf18a01",
+        "type": "json",
+        "z": "8f01f52760d57b75",
+        "name": "",
+        "property": "payload",
+        "action": "obj",
+        "pretty": false,
+        "x": 430,
+        "y": 140,
+        "wires": [
+            [
+                "be106970eb3b5782"
+            ]
+        ]
+    },
+    {
+        "id": "be106970eb3b5782",
+        "type": "function",
+        "z": "8f01f52760d57b75",
+        "name": "getReported",
+        "func": "var dados = msg.payload;\nvar state = dados[\"state\"];\nmsg.payload = state;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 590,
+        "y": 140,
+        "wires": [
+            [
+                "01c5a31897db145b",
+                "a69b983c61227093"
+            ]
+        ]
+    },
+    {
+        "id": "01c5a31897db145b",
+        "type": "function",
+        "z": "8f01f52760d57b75",
+        "name": "getEstacao",
+        "func": "let dados = msg.payload;\nlet estacao = dados[\"estacao\"];\nlet result = estacao.replace(\"Estação: \", \"\");\nmsg.payload = result;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 810,
+        "y": 140,
+        "wires": [
+            [
+                "9f47dc211f4328a6"
+            ]
+        ]
+    },
+    {
+        "id": "9f47dc211f4328a6",
+        "type": "ui_text",
+        "z": "8f01f52760d57b75",
+        "group": "b5423df27b4619d8",
+        "order": 2,
+        "width": 7,
+        "height": 2,
+        "name": "",
+        "label": "Estação",
+        "format": "{{msg.payload}}",
+        "layout": "col-center",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 1060,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "3d0d7c6bf846a6ca",
+        "type": "ui_text",
+        "z": "8f01f52760d57b75",
+        "group": "b5423df27b4619d8",
+        "order": 7,
+        "width": 7,
+        "height": 2,
+        "name": "",
+        "label": "Data",
+        "format": "{{msg.payload}}",
+        "layout": "col-center",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 1070,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "83a43793000dda17",
+        "type": "inject",
+        "z": "8f01f52760d57b75",
+        "name": "Inject Dados Teste",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"state\":{\"reported\":{\"hora\":{\"0\":\"0000\",\"1\":\"0100\",\"2\":\"0200\",\"3\":\"0300\",\"4\":\"0400\",\"5\":\"0500\",\"6\":\"0600\",\"7\":\"0700\",\"8\":\"0800\",\"9\":\"0900\",\"10\":\"1000\",\"11\":\"1100\",\"12\":\"1200\",\"13\":\"1300\",\"14\":\"1400\",\"15\":\"1500\",\"16\":\"1600\",\"17\":\"1700\",\"18\":\"1800\",\"19\":\"1900\",\"20\":\"2000\",\"21\":\"2100\",\"22\":\"2200\",\"23\":\"2300\"},\"temp_inst\":{\"0\":\"19,5\",\"1\":\"20,2\",\"2\":\"\",\"3\":\"\",\"4\":\"\",\"5\":\"\",\"6\":\"\",\"7\":\"\",\"8\":\"\",\"9\":\"\",\"10\":\"\",\"11\":\"\",\"12\":\"\",\"13\":\"\",\"14\":\"\",\"15\":\"\",\"16\":\"\",\"17\":\"\",\"18\":\"\",\"19\":\"\",\"20\":\"\",\"21\":\"\",\"22\":\"\",\"23\":\"\"},\"temp_max\":{\"0\":\"19,6\",\"1\":\"20,2\",\"2\":\"\",\"3\":\"\",\"4\":\"\",\"5\":\"\",\"6\":\"\",\"7\":\"\",\"8\":\"\",\"9\":\"\",\"10\":\"\",\"11\":\"\",\"12\":\"\",\"13\":\"\",\"14\":\"\",\"15\":\"\",\"16\":\"\",\"17\":\"\",\"18\":\"\",\"19\":\"\",\"20\":\"\",\"21\":\"\",\"22\":\"\",\"23\":\"\"},\"temp_min\":{\"0\":\"19,2\",\"1\":\"19,5\",\"2\":\"\",\"3\":\"\",\"4\":\"\",\"5\":\"\",\"6\":\"\",\"7\":\"\",\"8\":\"\",\"9\":\"\",\"10\":\"\",\"11\":\"\",\"12\":\"\",\"13\":\"\",\"14\":\"\",\"15\":\"\",\"16\":\"\",\"17\":\"\",\"18\":\"\",\"19\":\"\",\"20\":\"\",\"21\":\"\",\"22\":\"\",\"23\":\"\"},\"umidade_inst\":{\"0\":\"\",\"1\":\"\",\"2\":\"\",\"3\":\"\",\"4\":\"\",\"5\":\"\",\"6\":\"\",\"7\":\"\",\"8\":\"\",\"9\":\"\",\"10\":\"\",\"11\":\"\",\"12\":\"\",\"13\":\"\",\"14\":\"\",\"15\":\"\",\"16\":\"\",\"17\":\"\",\"18\":\"\",\"19\":\"\",\"20\":\"\",\"21\":\"\",\"22\":\"\",\"23\":\"\"},\"umidade_max\":{\"0\":\"\",\"1\":\"\",\"2\":\"\",\"3\":\"\",\"4\":\"\",\"5\":\"\",\"6\":\"\",\"7\":\"\",\"8\":\"\",\"9\":\"\",\"10\":\"\",\"11\":\"\",\"12\":\"\",\"13\":\"\",\"14\":\"\",\"15\":\"\",\"16\":\"\",\"17\":\"\",\"18\":\"\",\"19\":\"\",\"20\":\"\",\"21\":\"\",\"22\":\"\",\"23\":\"\"},\"umidade_min\":{\"0\":\"\",\"1\":\"\",\"2\":\"\",\"3\":\"\",\"4\":\"\",\"5\":\"\",\"6\":\"\",\"7\":\"\",\"8\":\"\",\"9\":\"\",\"10\":\"\",\"11\":\"\",\"12\":\"\",\"13\":\"\",\"14\":\"\",\"15\":\"\",\"16\":\"\",\"17\":\"\",\"18\":\"\",\"19\":\"\",\"20\":\"\",\"21\":\"\",\"22\":\"\",\"23\":\"\"},\"pto_orvalho_inst\":{\"0\":\"\",\"1\":\"\",\"2\":\"\",\"3\":\"\",\"4\":\"\",\"5\":\"\",\"6\":\"\",\"7\":\"\",\"8\":\"\",\"9\":\"\",\"10\":\"\",\"11\":\"\",\"12\":\"\",\"13\":\"\",\"14\":\"\",\"15\":\"\",\"16\":\"\",\"17\":\"\",\"18\":\"\",\"19\":\"\",\"20\":\"\",\"21\":\"\",\"22\":\"\",\"23\":\"\"},\"pto_orvalho_max\":{\"0\":\"\",\"1\":\"\",\"2\":\"\",\"3\":\"\",\"4\":\"\",\"5\":\"\",\"6\":\"\",\"7\":\"\",\"8\":\"\",\"9\":\"\",\"10\":\"\",\"11\":\"\",\"12\":\"\",\"13\":\"\",\"14\":\"\",\"15\":\"\",\"16\":\"\",\"17\":\"\",\"18\":\"\",\"19\":\"\",\"20\":\"\",\"21\":\"\",\"22\":\"\",\"23\":\"\"},\"pto_orvalho_min\":{\"0\":\"\",\"1\":\"\",\"2\":\"\",\"3\":\"\",\"4\":\"\",\"5\":\"\",\"6\":\"\",\"7\":\"\",\"8\":\"\",\"9\":\"\",\"10\":\"\",\"11\":\"\",\"12\":\"\",\"13\":\"\",\"14\":\"\",\"15\":\"\",\"16\":\"\",\"17\":\"\",\"18\":\"\",\"19\":\"\",\"20\":\"\",\"21\":\"\",\"22\":\"\",\"23\":\"\"},\"pressao_inst\":{\"0\":\"962,1\",\"1\":\"962,3\",\"2\":\"\",\"3\":\"\",\"4\":\"\",\"5\":\"\",\"6\":\"\",\"7\":\"\",\"8\":\"\",\"9\":\"\",\"10\":\"\",\"11\":\"\",\"12\":\"\",\"13\":\"\",\"14\":\"\",\"15\":\"\",\"16\":\"\",\"17\":\"\",\"18\":\"\",\"19\":\"\",\"20\":\"\",\"21\":\"\",\"22\":\"\",\"23\":\"\"},\"pressao_max\":{\"0\":\"962,2\",\"1\":\"962,3\",\"2\":\"\",\"3\":\"\",\"4\":\"\",\"5\":\"\",\"6\":\"\",\"7\":\"\",\"8\":\"\",\"9\":\"\",\"10\":\"\",\"11\":\"\",\"12\":\"\",\"13\":\"\",\"14\":\"\",\"15\":\"\",\"16\":\"\",\"17\":\"\",\"18\":\"\",\"19\":\"\",\"20\":\"\",\"21\":\"\",\"22\":\"\",\"23\":\"\"},\"pressao_min\":{\"0\":\"961,8\",\"1\":\"962,1\",\"2\":\"\",\"3\":\"\",\"4\":\"\",\"5\":\"\",\"6\":\"\",\"7\":\"\",\"8\":\"\",\"9\":\"\",\"10\":\"\",\"11\":\"\",\"12\":\"\",\"13\":\"\",\"14\":\"\",\"15\":\"\",\"16\":\"\",\"17\":\"\",\"18\":\"\",\"19\":\"\",\"20\":\"\",\"21\":\"\",\"22\":\"\",\"23\":\"\"},\"vento_vel\":{\"0\":\"3,6\",\"1\":\"5,4\",\"2\":\"\",\"3\":\"\",\"4\":\"\",\"5\":\"\",\"6\":\"\",\"7\":\"\",\"8\":\"\",\"9\":\"\",\"10\":\"\",\"11\":\"\",\"12\":\"\",\"13\":\"\",\"14\":\"\",\"15\":\"\",\"16\":\"\",\"17\":\"\",\"18\":\"\",\"19\":\"\",\"20\":\"\",\"21\":\"\",\"22\":\"\",\"23\":\"\"},\"vento_dir\":{\"0\":\"52,0\",\"1\":\"45,0\",\"2\":\"\",\"3\":\"\",\"4\":\"\",\"5\":\"\",\"6\":\"\",\"7\":\"\",\"8\":\"\",\"9\":\"\",\"10\":\"\",\"11\":\"\",\"12\":\"\",\"13\":\"\",\"14\":\"\",\"15\":\"\",\"16\":\"\",\"17\":\"\",\"18\":\"\",\"19\":\"\",\"20\":\"\",\"21\":\"\",\"22\":\"\",\"23\":\"\"},\"vento_raj\":{\"0\":\"8,8\",\"1\":\"9,7\",\"2\":\"\",\"3\":\"\",\"4\":\"\",\"5\":\"\",\"6\":\"\",\"7\":\"\",\"8\":\"\",\"9\":\"\",\"10\":\"\",\"11\":\"\",\"12\":\"\",\"13\":\"\",\"14\":\"\",\"15\":\"\",\"16\":\"\",\"17\":\"\",\"18\":\"\",\"19\":\"\",\"20\":\"\",\"21\":\"\",\"22\":\"\",\"23\":\"\"},\"radiacao\":{\"0\":\"\",\"1\":\"1,20\",\"2\":\"\",\"3\":\"\",\"4\":\"\",\"5\":\"\",\"6\":\"\",\"7\":\"\",\"8\":\"\",\"9\":\"\",\"10\":\"\",\"11\":\"\",\"12\":\"\",\"13\":\"\",\"14\":\"\",\"15\":\"\",\"16\":\"\",\"17\":\"\",\"18\":\"\",\"19\":\"\",\"20\":\"\",\"21\":\"\",\"22\":\"\",\"23\":\"\"},\"chuva\":{\"0\":\"0,0\",\"1\":\"0,0\",\"2\":\"\",\"3\":\"\",\"4\":\"\",\"5\":\"\",\"6\":\"\",\"7\":\"\",\"8\":\"\",\"9\":\"\",\"10\":\"\",\"11\":\"\",\"12\":\"\",\"13\":\"\",\"14\":\"\",\"15\":\"\",\"16\":\"\",\"17\":\"\",\"18\":\"\",\"19\":\"\",\"20\":\"\",\"21\":\"\",\"22\":\"\",\"23\":\"\"}},\"estacao\":\"Estação: IBIRUBA A883\",\"data\":\"Data de Referência: 09/05/2024 - 09/05/2024\"}}",
+        "payloadType": "json",
+        "x": 130,
+        "y": 300,
+        "wires": [
+            [
+                "7f3e742addf18a01",
+                "642d0c0661e127f0"
+            ]
+        ]
+    },
+    {
+        "id": "706314a4aaf62f4d",
+        "type": "ui_text",
+        "z": "8f01f52760d57b75",
+        "group": "b5423df27b4619d8",
+        "order": 9,
+        "width": 7,
+        "height": 2,
+        "name": "",
+        "label": "Hora última leitura",
+        "format": "{{msg.payload}}",
+        "layout": "col-center",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 1030,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "ff2c48aa1d4ee136",
+        "type": "ui_text",
+        "z": "8f01f52760d57b75",
+        "group": "b5423df27b4619d8",
+        "order": 12,
+        "width": 7,
+        "height": 2,
+        "name": "",
+        "label": "Última precipitação",
+        "format": "{{msg.payload}}",
+        "layout": "col-center",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 1030,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "a69b983c61227093",
+        "type": "function",
+        "z": "8f01f52760d57b75",
+        "name": "Get Dados",
+        "func": "// dados do JSON vindo do AWS\nlet dados = msg.payload;\nlet data = dados[\"data\"];\nlet reported = dados[\"reported\"]\nlet chuva = reported[\"chuva\"];\nlet hora = reported[\"hora\"];\n\n\n/*********************************\n * Mensagens para envio de dados *\n *********************************/\nlet msgData = {};\nlet msgHora = {};\nlet msgChuva = {};\nlet msgInsertDB = {};\n\n/*******************************\n * Conversao data e hora       *\n * Considerando falta de dados *\n *******************************/\n\n// obter data no formato mm/dd/aaaa - hh:mm:ss\ndata = data.replace(\"Data de Referência: \", \"\");\ndata = data.replace(\" - \", \"\\/\");\n\nlet diaMesAno = data.split(\"\\/\");\nlet dateString = diaMesAno[1] + \"\\/\";\n\ndateString = dateString + diaMesAno[0] + \"\\/\";\ndateString = dateString + diaMesAno[2];\ndateString = dateString + \" 0:00:00\";\n\nlet dataMeiaNoite = new Date(dateString);\nlet epochMeiaNoite = dataMeiaNoite.getTime();\nlet horaUltimaLeitura = \"0000\";\n\n// obter ultimos dados da estacao\nlet i = 0;\nwhile (chuva[i] != \"\") {\n    i++;\n}\n\nif (i == 0) {\n    // sem dados no periodo\n    // ultima leitura eh do dia anterior\n    epochMeiaNoite = epochMeiaNoite - 86400000;\n} else {\n    i--;\n    horaUltimaLeitura = hora[i];\n}\n\nhoraUltimaLeitura = horaUltimaLeitura.slice(0, 2);\nlet horaUL = parseInt(horaUltimaLeitura) * 3600000;\n\nlet horario = epochMeiaNoite + horaUL;\nlet horarioTexto = new Date(horario).toString();\n\n\n// INMET nao dah em gmt-3 e estou com preguiça de arrumar\nhorarioTexto = horarioTexto.replace(\" (Brasilia Standard Time)\", \"\");\nhorarioTexto = horarioTexto.replace(\"-0300\", \"\");\n\n/*******************************************/\n// obter dados de precipitacao\n// funcao repetida, apenas para documentacao do codigo\nlet dadosChuva = chuva[i];\nlet epochText = horario.toString();\n\n\n/****************************************************\n * Insert no banco de dados                         *\n ****************************************************/\nlet dataChuva = dadosChuva.replace(\",\", \".\")\nlet comandoSQL = \"INSERT IGNORE INTO INMET (epoch, precipitacao, datahora) values (\";\ncomandoSQL = comandoSQL + epochText + \", \";\ncomandoSQL = comandoSQL + dataChuva + \", \";\ncomandoSQL = comandoSQL + \"'\" + horarioTexto + \"');\";\n\n\n// encapsulamento de dados para envio\nmsgData.payload = horarioTexto;\nmsgHora.payload = horaUltimaLeitura + \":00\";\nmsgChuva.payload = dadosChuva;\nmsgInsertDB.topic = comandoSQL;\nreturn [msgData, msgHora, msgChuva, msgInsertDB];\n",
+        "outputs": 4,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 790,
+        "y": 240,
+        "wires": [
+            [
+                "3d0d7c6bf846a6ca"
+            ],
+            [
+                "706314a4aaf62f4d"
+            ],
+            [
+                "ff2c48aa1d4ee136"
+            ],
+            [
+                "19de3667bccae472"
+            ]
+        ]
+    },
+    {
+        "id": "19de3667bccae472",
+        "type": "mysql",
+        "z": "8f01f52760d57b75",
+        "mydb": "d6de02eae05f3d8a",
+        "name": "INMET",
+        "x": 1000,
+        "y": 320,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "76596643640b4c8c",
+        "type": "debug",
+        "z": "8f01f52760d57b75",
+        "name": "debug 13",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1000,
+        "y": 640,
+        "wires": []
+    },
+    {
+        "id": "642d0c0661e127f0",
+        "type": "function",
+        "z": "8f01f52760d57b75",
+        "name": "Select 48horas precipit",
+        "func": "let comandoSQL = \"select sum(precipitacao) as totalPrecip \";\ncomandoSQL = comandoSQL + \"from INMET order by epoch desc \";\ncomandoSQL = comandoSQL + \"limit 48;\";\n\nmsg.topic = comandoSQL;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 500,
+        "y": 440,
+        "wires": [
+            [
+                "448b506efc9685e3"
+            ]
+        ]
+    },
+    {
+        "id": "448b506efc9685e3",
+        "type": "mysql",
+        "z": "8f01f52760d57b75",
+        "mydb": "d6de02eae05f3d8a",
+        "name": "INMET",
+        "x": 680,
+        "y": 440,
+        "wires": [
+            [
+                "fa51df072c9dadee"
+            ]
+        ]
+    },
+    {
+        "id": "6695eec2a78550d4",
+        "type": "debug",
+        "z": "8f01f52760d57b75",
+        "name": "debug 14",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1040,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "fa51df072c9dadee",
+        "type": "function",
+        "z": "8f01f52760d57b75",
+        "name": "Total",
+        "func": "let dados = msg.payload[0][\"totalPrecip\"]\n\nmsg.payload = dados;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 830,
+        "y": 440,
+        "wires": [
+            [
+                "6695eec2a78550d4",
+                "d98c7a875811a48b",
+                "940563d4281f9fb9"
+            ]
+        ]
+    },
+    {
+        "id": "d98c7a875811a48b",
+        "type": "ui_text",
+        "z": "8f01f52760d57b75",
+        "group": "b5423df27b4619d8",
+        "order": 14,
+        "width": 7,
+        "height": 2,
+        "name": "Precipitação 48h",
+        "label": "Precipitação 48h",
+        "format": "{{msg.payload}}",
+        "layout": "col-center",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 1030,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "509b1c2437628152",
+        "type": "mqtt out",
+        "z": "8f01f52760d57b75",
+        "name": "AWS LOGO! 230RCE",
+        "topic": "$aws/things/Logo230RCE/shadow/update/documents",
+        "qos": "0",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "b90e1ab.b432fe8",
+        "x": 1040,
+        "y": 580,
+        "wires": []
+    },
+    {
+        "id": "940563d4281f9fb9",
+        "type": "function",
+        "z": "8f01f52760d57b75",
+        "name": "Precip. acumulada para AWS",
+        "func": "let dados = parseInt(msg.payload);\ndados = dados * 10;\n\nlet hexDados = dados.toString(16);\n\nlet mensagem = \"{\\\"state\\\":{\\\"reported\\\":\";\nmensagem = mensagem + \"{\\\"AM..4:6-1\\\": \";\nmensagem = mensagem + hexDados;\nmensagem = mensagem + \"}}}\";\n\nmsg.payload = mensagem;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 780,
+        "y": 580,
+        "wires": [
+            [
+                "509b1c2437628152",
+                "76596643640b4c8c"
+            ]
+        ]
+    },
+    {
+        "id": "72a3eb63bc1866aa",
+        "type": "ui_spacer",
+        "z": "8f01f52760d57b75",
+        "name": "spacer",
+        "group": "b5423df27b4619d8",
+        "order": 1,
+        "width": 4,
+        "height": 1
+    },
+    {
+        "id": "dca2a507088a4b2d",
+        "type": "ui_spacer",
+        "z": "8f01f52760d57b75",
+        "name": "spacer",
+        "group": "b5423df27b4619d8",
+        "order": 3,
+        "width": 4,
+        "height": 1
+    },
+    {
+        "id": "c7d8a2180e9bc625",
+        "type": "ui_spacer",
+        "z": "8f01f52760d57b75",
+        "name": "spacer",
+        "group": "b5423df27b4619d8",
+        "order": 4,
+        "width": 4,
+        "height": 1
+    },
+    {
+        "id": "d61aaf07634ca2b4",
+        "type": "ui_spacer",
+        "z": "8f01f52760d57b75",
+        "name": "spacer",
+        "group": "b5423df27b4619d8",
+        "order": 5,
+        "width": 4,
+        "height": 1
+    },
+    {
+        "id": "056eaac629342c88",
+        "type": "ui_spacer",
+        "z": "8f01f52760d57b75",
+        "name": "spacer",
+        "group": "b5423df27b4619d8",
+        "order": 6,
+        "width": 15,
+        "height": 1
+    },
+    {
+        "id": "e12cec936ca6368e",
+        "type": "ui_spacer",
+        "z": "8f01f52760d57b75",
+        "name": "spacer",
+        "group": "b5423df27b4619d8",
+        "order": 8,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "dcb1160274a073b5",
+        "type": "ui_spacer",
+        "z": "8f01f52760d57b75",
+        "name": "spacer",
+        "group": "b5423df27b4619d8",
+        "order": 10,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "7be81b535bef320b",
+        "type": "ui_spacer",
+        "z": "8f01f52760d57b75",
+        "name": "spacer",
+        "group": "b5423df27b4619d8",
+        "order": 11,
+        "width": 15,
+        "height": 1
+    },
+    {
+        "id": "93f8dd60d56c1f0e",
+        "type": "ui_spacer",
+        "z": "8f01f52760d57b75",
+        "name": "spacer",
+        "group": "b5423df27b4619d8",
+        "order": 13,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "ca88fe0b5e6c06c8",
+        "type": "ui_spacer",
+        "z": "8f01f52760d57b75",
+        "name": "spacer",
+        "group": "b5423df27b4619d8",
+        "order": 15,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "b90e1ab.b432fe8",
+        "type": "mqtt-broker",
+        "name": "AWS IoT Core",
+        "broker": "ayskvuv5aj6jn-ats.iot.eu-central-1.amazonaws.com",
+        "port": "8883",
+        "tls": "6227a848.b52f98",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": true,
+        "protocolVersion": "3",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "b5423df27b4619d8",
+        "type": "ui_group",
+        "name": "INMET",
+        "tab": "97bc6c852225fe16",
+        "order": 1,
+        "disp": true,
+        "width": 15,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "d6de02eae05f3d8a",
+        "type": "MySQLdatabase",
+        "name": "INMET",
+        "host": "127.0.0.1",
+        "port": "3306",
+        "db": "inmet",
+        "tz": "America/Sao_Paulo",
+        "charset": "UTF8"
+    },
+    {
+        "id": "6227a848.b52f98",
+        "type": "tls-config",
+        "name": "",
+        "cert": "",
+        "key": "",
+        "ca": "",
+        "certname": "1d65721100b045d1448faec7e20d52426231f814a70fb28bd5de4d1eed001faa-certificate.pem.crt",
+        "keyname": "1d65721100b045d1448faec7e20d52426231f814a70fb28bd5de4d1eed001faa-private.pem.key",
+        "caname": "AmazonRootCA1.pem",
+        "servername": "",
+        "verifyservercert": false,
+        "alpnprotocol": ""
+    },
+    {
+        "id": "97bc6c852225fe16",
+        "type": "ui_tab",
+        "name": "INMET",
+        "icon": "dashboard",
+        "disabled": false,
+        "hidden": false
+    }
+]

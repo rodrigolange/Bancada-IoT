@@ -1,0 +1,231 @@
+[
+    {
+        "id": "4c8ee0df9780afe5",
+        "type": "tab",
+        "label": "CLP 230RCE",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "5a88e28dfdb91af7",
+        "type": "mqtt in",
+        "z": "4c8ee0df9780afe5",
+        "name": "AWS IoT Core - LOGO! 230RCE",
+        "topic": "$aws/things/Logo230RCE/shadow/update/documents",
+        "qos": "0",
+        "datatype": "auto-detect",
+        "broker": "b90e1ab.b432fe8",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 150,
+        "y": 120,
+        "wires": [
+            [
+                "fa221d8fcd05b75d",
+                "a95cbf86672975fa"
+            ]
+        ]
+    },
+    {
+        "id": "9b80fea991f5b16e",
+        "type": "function",
+        "z": "4c8ee0df9780afe5",
+        "name": "Status CLP",
+        "func": "let msgM1 = {};\nlet msgM2 = {};\nlet msgM3 = {};\nvar msgAM4 = {};\n\nlet dados = msg.payload;\n//let dadosCurrent = dados[\"current\"][\"state\"];\n//let dadosState = dadosCurrent[\"state\"];\nlet dadosReported = dados[\"current\"][\"state\"][\"reported\"];\n\n//msg.payload = dadosReported;\n\nmsgM2.payload = dadosReported[\"M..1:2-1\"];\nmsgM3.payload = dadosReported[\"M..1:3-1\"];\nmsgAM4.payload = dadosReported[\"AM..4:4-1\"];\nreturn [msgM1, msgM2, msgM3, msgAM4];",
+        "outputs": 4,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 550,
+        "y": 120,
+        "wires": [
+            [],
+            [
+                "dd383e72223991c0"
+            ],
+            [
+                "af5c5b6a7011aa2e"
+            ],
+            [
+                "b1b351f8b24e0fcc"
+            ]
+        ]
+    },
+    {
+        "id": "fa221d8fcd05b75d",
+        "type": "json",
+        "z": "4c8ee0df9780afe5",
+        "name": "",
+        "property": "payload",
+        "action": "obj",
+        "pretty": false,
+        "x": 370,
+        "y": 120,
+        "wires": [
+            [
+                "9b80fea991f5b16e",
+                "f5b31acb05961dda"
+            ]
+        ]
+    },
+    {
+        "id": "dd383e72223991c0",
+        "type": "ui_text",
+        "z": "4c8ee0df9780afe5",
+        "group": "928ecfe42f97af68",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Motor Ligado",
+        "format": "{{msg.payload}}",
+        "layout": "col-center",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 810,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "af5c5b6a7011aa2e",
+        "type": "ui_text",
+        "z": "4c8ee0df9780afe5",
+        "group": "928ecfe42f97af68",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Fora de Sunrise-Sunset",
+        "format": "{{msg.payload}}",
+        "layout": "col-center",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 850,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "b1b351f8b24e0fcc",
+        "type": "ui_text",
+        "z": "4c8ee0df9780afe5",
+        "group": "928ecfe42f97af68",
+        "order": 5,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Umidade",
+        "format": "{{msg.payload}}",
+        "layout": "col-center",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 800,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "a95cbf86672975fa",
+        "type": "debug",
+        "z": "4c8ee0df9780afe5",
+        "name": "debug 15",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 540,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "f5b31acb05961dda",
+        "type": "debug",
+        "z": "4c8ee0df9780afe5",
+        "name": "debug 16",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 540,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "b90e1ab.b432fe8",
+        "type": "mqtt-broker",
+        "name": "AWS IoT Core",
+        "broker": "ayskvuv5aj6jn-ats.iot.eu-central-1.amazonaws.com",
+        "port": "8883",
+        "tls": "6227a848.b52f98",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": true,
+        "protocolVersion": "3",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "928ecfe42f97af68",
+        "type": "ui_group",
+        "name": "LOGO! 230RCE",
+        "tab": "b0e6f9b1ad0220c4",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "6227a848.b52f98",
+        "type": "tls-config",
+        "name": "",
+        "cert": "",
+        "key": "",
+        "ca": "",
+        "certname": "1d65721100b045d1448faec7e20d52426231f814a70fb28bd5de4d1eed001faa-certificate.pem.crt",
+        "keyname": "1d65721100b045d1448faec7e20d52426231f814a70fb28bd5de4d1eed001faa-private.pem.key",
+        "caname": "AmazonRootCA1.pem",
+        "servername": "",
+        "verifyservercert": false,
+        "alpnprotocol": ""
+    },
+    {
+        "id": "b0e6f9b1ad0220c4",
+        "type": "ui_tab",
+        "name": "LOGO 230RCE",
+        "icon": "dashboard",
+        "disabled": false,
+        "hidden": false
+    }
+]
