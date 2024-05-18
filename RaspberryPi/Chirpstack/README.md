@@ -17,7 +17,6 @@ sudo raspi-config -> interfaces -> enable SPI
 
 https://github.com/Elecrow-RD/LR1302_loraWAN
 
-ToDo: rever os locais das pastas. O comando mv ~/lorawan/LR1302_loraWAN/LR1302_HAL/sx1302_hal/ ~/lorawan/ não precisa. Ajustar.
 
 ```
 mkdir ~/lorawan
@@ -30,17 +29,21 @@ cd ~/lorawan/LR1302_loraWAN/LR1302_HAL/sx1302_hal/
 
 make
 
-cd packet_forwarder
-
-chmod 755 reset_lgw.sh 
 ```
 
-copiar o arquivo global_conf.json do repositório para a pasta ~/lorawan/sx1302_hal/packet_forwarder
-
-alterar o arquivo ~/lorawan/sx1302_hal/packet_forwarder/reset_lgw.sh:
+copiar o arquivo global_conf.json deste repositório para a pasta sx1302_hal/packet_forwarder
 
 ```
-sudo nano ~/lorawan/sx1302_hal/packet_forwarder
+cd ~/lorawan/LR1302_loraWAN/LR1302_HAL/sx1302_hal/packet_forwarder
+
+wget https://raw.githubusercontent.com/rodrigolange/Bancada-IoT/main/RaspberryPi/Chirpstack/global_conf.json
+```
+
+
+alterar o arquivo reset_lgw.sh:
+
+```
+sudo nano ~/lorawan/LR1302_loraWAN/LR1302_HAL/sx1302_hal/packet_forwarder/reset_lgw.sh
 ```
 
 Mudar o pino de reset de acordo com a documentação em https://www.elecrow.com/wiki/lr1302-lorawan-hat-for-rpi-prd.html:
@@ -70,18 +73,31 @@ reset() {
 }
 ```
 
-para testar: na pasta ~/lorawan/sx1302_hal/packet_forwarder, executar
+Direitos de execução no arquivo reset_lgw.sh
 
 ```
+chmod +x ~/lorawan/LR1302_loraWAN/LR1302_HAL/sx1302_hal/packet_forwarder/reset_lgw.sh
+```
+
+
+para testar: 
+
+```
+cd ~/lorawan/LR1302_loraWAN/LR1302_HAL/sx1302_hal/packet_forwarder/
+
 sudo ./lora_pkt_fwd -c global_conf.json 
 ```
 e ligar um nodo
 
 ### Mover os arquivos para lugares padrão:
 
-sudo cp reset_lgw.sh /usr/bin/
+```
+sudo mkdir /opt/lorawan
 
-sudo cp -r ~/lorawan/sx1302_hal/packet_forwarder /opt/lorawan
+cd ~/lorawan/LR1302_loraWAN/LR1302_HAL/sx1302_hal/
+
+sudo cp -r packet_forwarder/ /opt/lorawan/
+```
 
 ### Criar o arquivo de inicialização do serviço pktForwarder
 
@@ -147,6 +163,12 @@ Instalar o serviço:
 
 ```
 sudo update-rc.d lorapktfwd defaults
+```
+
+Iniciar o serviço:
+
+```
+sudo service lorapktfwd start
 ```
 
 Para ver o log:
