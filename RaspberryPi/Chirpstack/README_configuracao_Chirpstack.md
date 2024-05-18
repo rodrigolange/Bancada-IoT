@@ -1,9 +1,10 @@
 # Configuração de uma aplicação com gateway no Chripstack
 
+## Configurar o Chirpstack para receber dados da bridge/concentrador
 
-## Acessar o console do Chirpstack
+### Acessar o console
 
-https//<IP do Raspberry>:8080
+https//IP_do_Raspberry:8080
 
 Usuário: admin
 Senha: admin
@@ -22,3 +23,4 @@ Preencher os dados do gateway. O gateway_ID pode ser obtido no arquivo /opt/lora
 Após configurado, pode-se testar ligando um nodo e acompanhando em LoRaWAN frames:
 
 ![image](https://github.com/rodrigolange/Bancada-IoT/assets/52110364/0353202f-ff0d-4c23-9277-5bedbb6725f6)
+
