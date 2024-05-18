@@ -60,6 +60,8 @@ Alterar as linhas da seção integration.mqtt para os valores desejados
   command_topic_template="au915_0/gateway/{{ .GatewayID }}/command/#"
 ```
 
+**IMPORTANTE:** Remover as demais entradas event_topic_template e command_topic_template
+
 Instalar o serviço de bridge e iniciar:
 
 ```
@@ -77,6 +79,12 @@ sudo journalctl -f -n 100 -u chirpstack-gateway-bridge
 ```
 
 ## Configurar o Chirpstack
+
+Alterar a configuração para usar apenas a frequência da região desejada. Editar o arquivo abaixo e comentar todas as entradas menos AU915 na seção  enabled_regions=[
+
+```
+sudo nano /etc/chirpstack/chirpstack.toml
+```
 
 Instalar e iniciar o serviço do Chirpstack:
 
