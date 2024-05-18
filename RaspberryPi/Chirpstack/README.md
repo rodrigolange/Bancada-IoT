@@ -26,15 +26,7 @@ cd ~/lorawan
 
 git clone https://github.com/Elecrow-RD/LR1302_loraWAN.git
 
-cd LR1302_loraWAN
-
-mv ~/lorawan/LR1302_loraWAN/LR1302_HAL/sx1302_hal/ ~/lorawan/
-
-~/lorawan/
-
-rm -rf LR1302_loraWAN
-
-cd ~/lorawan/sx1302_hal
+cd ~/lorawan/LR1302_loraWAN/LR1302_HAL/sx1302_hal/
 
 make
 
