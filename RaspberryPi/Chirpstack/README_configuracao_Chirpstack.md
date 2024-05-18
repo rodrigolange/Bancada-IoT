@@ -4,7 +4,7 @@
 
 ### Acessar o console
 
-https//IP_do_Raspberry:8080
+http://IP_do_Raspberry:8080
 
 Usuário: admin
 Senha: admin

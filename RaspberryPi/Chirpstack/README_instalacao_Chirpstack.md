@@ -104,7 +104,7 @@ sudo journalctl -f -n 100 -u chirpstack
 
 ## Para acessar a console do Chirpstack
 
-https://<IP do Raspberry>:8080
+http://IP_do_Raspberry>:8080
 
 Usuário: admin
 Senha: admin

@@ -17,16 +17,13 @@ sudo raspi-config -> interfaces -> enable SPI
 
 Baseado em https://github.com/Elecrow-RD/LR1302_loraWAN
 
-Arquivo README_concentrador.md
+Arquivo README_instalacao_concentrador.md.md
 
 
 ## Chirpstack:
 
 Tutorial em https://www.chirpstack.io/docs/getting-started/debian-ubuntu.html
 
-Instalação do Chirpstack no Raspberry Pi: arquivo README_Chirpstack.md
+Instalação do Chirpstack no Raspberry Pi: arquivo README_instalacao_Chirpstack.md
 
 Configuração de uma aplicação com gateway: arquivo README_configuracao_Chirpstack.md
-
-
-
