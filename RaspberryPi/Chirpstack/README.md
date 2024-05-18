@@ -43,6 +43,39 @@ chmod 755 reset_lgw.sh
 
 copiar o arquivo global_conf.json do repositório para a pasta ~/lorawan/sx1302_hal/packet_forwarder
 
+alterar o arquivo ~/lorawan/sx1302_hal/packet_forwarder/reset_lgw.sh:
+
+```
+sudo nano ~/lorawan/sx1302_hal/packet_forwarder
+```
+
+Mudar o pino de reset de acordo com a documentação em https://www.elecrow.com/wiki/lr1302-lorawan-hat-for-rpi-prd.html:
+
+```
+SX1302_RESET_PIN=17
+```
+
+alterar a função reset() para:
+
+```
+reset() {
+    echo "CoreCell reset through GPIO$SX1302_RESET_PIN..."
+    echo "SX1261 reset through GPIO$SX1302_RESET_PIN..."
+    echo "CoreCell power enable through GPIO$SX1302_POWER_EN_PIN..."
+    echo "CoreCell ADC reset through GPIO$AD5338R_RESET_PIN..."
+
+    # write output for SX1302 CoreCell power_enable and reset
+        pinctrl set $SX1302_RESET_PIN op; WAIT_GPIO
+        pinctrl set $SX1302_RESET_PIN op dh; WAIT_GPIO
+        pinctrl set $SX1302_RESET_PIN op dl; WAIT_GPIO
+
+        pinctrl set $SX1261_RESET_PIN op; WAIT_GPIO
+        pinctrl set $SX1261_RESET_PIN op dl; WAIT_GPIO
+        pinctrl set $SX1261_RESET_PIN op dh; WAIT_GPIO
+
+}
+```
+
 para testar: na pasta ~/lorawan/sx1302_hal/packet_forwarder, executar
 
 ```
