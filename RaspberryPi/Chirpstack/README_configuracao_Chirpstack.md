@@ -17,3 +17,8 @@ Preencher os dados do gateway. O gateway_ID pode ser obtido no arquivo /opt/lora
 
 ![image](https://github.com/rodrigolange/Bancada-IoT/assets/52110364/6dba0063-8450-463f-88d5-a33351c13a00)
 
+
+
+Após configurado, pode-se testar ligando um nodo e acompanhando em LoRaWAN frames:
+
+![image](https://github.com/rodrigolange/Bancada-IoT/assets/52110364/0353202f-ff0d-4c23-9277-5bedbb6725f6)
