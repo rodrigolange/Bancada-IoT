@@ -34,7 +34,17 @@ cd ~/lorawan/sx1302_hal
 
 make
 
+cd packet_forwarder
+
+chmod 755 reset_lgw.sh 
+
 copiar o arquivo global_conf.json do repositório para a pasta ~/lorawan/sx1302_hal/packet_forwarder
+
+para testar: na pasta ~/lorawan/sx1302_hal/packet_forwarder, executar
+
+sudo ./lora_pkt_fwd 
+
+e ligar um nodo
 
 3 - Chirpstack:
 
