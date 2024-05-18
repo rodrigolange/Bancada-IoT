@@ -24,7 +24,9 @@ Arquivo README_concentrador.md
 
 Tutorial em https://www.chirpstack.io/docs/getting-started/debian-ubuntu.html
 
-Arquivo README_Chirpstack.md
+Instalação do Chirpstack no Raspberry Pi: arquivo README_Chirpstack.md
+
+Configuração de uma aplicação com gateway: arquivo README_configuracao_Chirpstack.md
 
 
 
