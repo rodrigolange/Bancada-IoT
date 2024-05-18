@@ -46,7 +46,7 @@ copiar o arquivo global_conf.json do repositório para a pasta ~/lorawan/sx1302_
 para testar: na pasta ~/lorawan/sx1302_hal/packet_forwarder, executar
 
 ```
-sudo ./lora_pkt_fwd 
+sudo ./lora_pkt_fwd -c global_conf.json 
 ```
 e ligar um nodo
 
