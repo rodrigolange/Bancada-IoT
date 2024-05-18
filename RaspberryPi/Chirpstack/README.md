@@ -30,10 +30,11 @@ mv ~/lorawan/LR1302_loraWAN/LR1302_HAL/sx1302_hal/ ~/lorawan/
 
 rm -rf LR1302_loraWAN
 
-cd ~/lorawan/cd sx1302_hal
+cd ~/lorawan/sx1302_hal
 
 make
 
+copiar o arquivo global_conf.json do repositório para a pasta ~/lorawan/sx1302_hal/packet_forwarder
 
 3 - Chirpstack:
 
