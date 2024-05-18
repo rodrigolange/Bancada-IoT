@@ -1,6 +1,6 @@
-**Passos para instalação:**
+## Passos para instalação: ##
 
-**1 - Softwares básicos necessários:**
+### Softwares básicos necessários:###
 ```
 sudo apt update
 
@@ -13,7 +13,7 @@ sudo apt autoremove
 
 sudo raspi-config -> interfaces -> enable SPI
 
-**2 - Software do concentrador LR1302:**
+### Software do concentrador LR1302: 
 
 https://github.com/Elecrow-RD/LR1302_loraWAN
 
@@ -83,7 +83,7 @@ sudo ./lora_pkt_fwd -c global_conf.json
 ```
 e ligar um nodo
 
-**3 - Chirpstack:**
+### Chirpstack:
 
 Tutorial em https://www.chirpstack.io/docs/getting-started/debian-ubuntu.html
 
