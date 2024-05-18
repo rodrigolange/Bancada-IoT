@@ -177,6 +177,24 @@ Para ver o log:
 sudo journalctl -f -n 100 -u lorapktfwd.service
 ```
 
+**Sugestão: desativar o GPS para evitar problemas de inicialização do gateway LoRa**
+
+Editar o arquivo global_conf.json
+
+```
+sudo nano /opt/lorawan/packet_forwarder/global_conf.json
+```
+
+e comentar as linhas relacionadas ao GPS:
+
+```
+"forward_crc_disabled": false //,   <-- comentar essa vírgula para evitar problemas com o json
+//"gps_tty_path": "/dev/ttyS0",
+//"ref_latitude": 0.0,
+//"ref_longitude": 0.0,
+//"ref_altitude": 0
+```
+
 
 ## Chirpstack:
 
