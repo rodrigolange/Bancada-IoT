@@ -28,5 +28,7 @@ board_build.core = earlephilhower
 board_build.filesystem_size = 0.5m
 ```
 
+## LMIC-node
 
+https://github.com/lnlp/LMIC-node
 
