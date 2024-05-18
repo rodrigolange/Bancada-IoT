@@ -1,6 +1,10 @@
 # Raspberry Pi Pico W
 
-## Instalador de ferramentas e IDE
+## Tutorial de primeiro uso - No Windows, Platform.io com Visual Studio
 
-https://www.raspberrypi.com/news/raspberry-pi-pico-windows-installer/
+https://tutoduino.fr/en/pico-platformio/
+
+
+
+
 
