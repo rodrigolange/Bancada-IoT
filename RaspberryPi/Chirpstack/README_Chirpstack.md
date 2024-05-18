@@ -56,8 +56,8 @@ Alterar as linhas da seção integration.mqtt para os valores desejados
 
 ```
 [integration.mqtt]
-event_topic_template="gateway/{{ .GatewayID }}/event/{{ .EventType }}"
-command_topic_template="gateway/{{ .GatewayID }}/command/#"
+  event_topic_template="au915_0/gateway/{{ .GatewayID }}/event/{{ .EventType }}"
+  command_topic_template="au915_0/gateway/{{ .GatewayID }}/command/#"
 ```
 
 Instalar o serviço de bridge e iniciar:
