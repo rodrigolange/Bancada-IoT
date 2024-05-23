@@ -1,0 +1,20 @@
+cmake_minimum_required(VERSION 3.12)
+
+set(PICO_BOARD pico_w)
+
+include(pico_sdk_import.cmake)
+
+project(blink)
+
+pico_sdk_init()
+
+add_executable(blink
+    blink.c
+)
+
+pico_add_extra_outputs(blink)
+
+target_link_libraries(blink pico_stdlib pico_cyw43_arch_none)
+
+pico_enable_stdio_usb(blink 1)
+pico_enable_stdio_uart(blink 0)
