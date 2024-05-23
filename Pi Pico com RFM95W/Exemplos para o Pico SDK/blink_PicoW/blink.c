@@ -9,7 +9,6 @@
 
 int main() {
 
-
     printf("teste\n");
 
     _Bool result = stdio_usb_init();
