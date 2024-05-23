@@ -10,5 +10,7 @@
 
 mkdir build
 cd build
-cmake ..
+
+# para o pico w incluir o tipo de placa
+cmake -DPICO_BOARD=pico_w ..
 make
