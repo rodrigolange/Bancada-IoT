@@ -1,3 +1,10 @@
+/***************************************************************************************
+ * ver explicacao                                                                      *
+ * em https://forum.radioenge.com.br/t/configuracao-dos-canais-do-gateway-lorawan/286  *
+ * sobre as frequencias e canais                                                       *
+ ***************************************************************************************/
+
+
 {
     "SX130x_conf": {
         "com_type": "SPI",
