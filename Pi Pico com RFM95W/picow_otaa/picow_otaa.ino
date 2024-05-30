@@ -29,7 +29,7 @@ const lmic_pinmap lmic_pins = {
     .nss = 17,
     .rxtx = LMIC_UNUSED_PIN,
     .rst = 9,
-    .dio = {2, 3, 4},
+    .dio = {6, 7, 8},
 };
 
 MicroDS18B20<10> sensor;
