@@ -16,7 +16,8 @@ sudo apt upgrade
 
 sudo apt install build-essential curl git
 
-NVM_NODEJS_ORG_MIRROR=https://unofficial-builds.nodejs.org/download/release nvm install 20.8.1
+# isso nao funciona, o instalador do node-red nao gosta do nvm
+# NVM_NODEJS_ORG_MIRROR=https://unofficial-builds.nodejs.org/download/release nvm install 20.8.1
 ```
 
 Releases não oficiais em 
