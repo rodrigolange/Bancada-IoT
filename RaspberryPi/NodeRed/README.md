@@ -33,7 +33,6 @@ Instalar elementos para a interface de usuário:
 *** ATENÇÃO: no Rasbperry Pi 3, utilizar o node.js 14 com o nodered 3. Para isso, baixar o script de instalação do node-red e executar os passos abaixo:
 
 ```
-```
 curl -sL https://raw.githubusercontent.com/node-red/linux-installers/master/deb/update-nodejs-and-nodered >> script.sh
 
 chmod 777 script.sh
