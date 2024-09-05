@@ -27,3 +27,5 @@ Tutorial em https://www.chirpstack.io/docs/getting-started/debian-ubuntu.html
 Instalação do Chirpstack no Raspberry Pi: arquivo README_instalacao_Chirpstack.md
 
 Configuração de uma aplicação com gateway: arquivo README_configuracao_Chirpstack.md
+
+Link para exemplo de plugin ADR: https://github.com/Alex9779/Chirpstack-ADR/blob/master/v4/default-custom.js
