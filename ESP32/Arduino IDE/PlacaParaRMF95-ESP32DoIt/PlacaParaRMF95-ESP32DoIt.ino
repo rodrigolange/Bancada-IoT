@@ -19,7 +19,7 @@
 #include "mbedtls/base64.h"
 
 // Schedule TX every this many seconds (might become longer due to duty cycle limitations).
-unsigned TX_INTERVAL = 150;
+unsigned TX_INTERVAL = 300;
 
 //#define ARDUINO_LMIC_CFG_NETWORK_TTN 1
 
@@ -38,7 +38,7 @@ float temperatura = 29.3;
 int mydataSize = 8;
 int16_t int_temp = (int16_t)(temperatura * 100);
 
-uint8_t mydata[255];
+static uint8_t mydata[] = "12Lange\0";
 
 static osjob_t sendjob;
 unsigned char stringRecebida[255];
@@ -47,6 +47,7 @@ unsigned int *outlen = 0;
 uint8_t currentDataRate;
 uint8_t currentTxPower;
 
+/*
 void prepare_txDataFrame(){
   mydata[0] = int_temp >> 8;
   mydata[1] = int_temp & 0xFF;
@@ -57,7 +58,7 @@ void prepare_txDataFrame(){
   mydata[6] = 'e';
   mydata[7] = '\0';  
 }
-
+*/
 
 // Pin mapping de acordo com a PCB do projeto
 const lmic_pinmap lmic_pins = {
@@ -155,6 +156,22 @@ void onEvent (ev_t ev) {
               Serial.println(part);
 
               String comando = String(part);
+
+              //size_t dlen = 255;
+              //mbedtls_base64_decode(ptr, dlen, outlen, LMIC.frame[LMIC.dataBeg], LMIC.dataLen); //(const unsigned char*)
+
+              /*
+              Serial.print(F("Received "));
+              Serial.print(LMIC.dataLen);
+              Serial.print(F(" bytes of payload: 0x"));
+              for (int i = 0; i < LMIC.dataLen; i++) {
+                if (LMIC.frame[LMIC.dataBeg + i] < 0x10) {
+                  Serial.print(F("0"));
+                }
+                Serial.print(LMIC.frame[LMIC.dataBeg + i], HEX);
+              }
+              Serial.println();
+              */
               if(comando == "aumentar"){   // YXVtZW50YXI=
                 Serial.print("Aumentando o periodo. Novo periodo: ");
                 TX_INTERVAL = TX_INTERVAL * 2;
@@ -211,7 +228,7 @@ void do_send(osjob_t* j){
         Serial.println(F("OP_TXRXPEND, not sending"));
     } else {
         // Prepare upstream data transmission at the next possible time.
-        prepare_txDataFrame();
+        //prepare_txDataFrame();
         LMIC_setTxData2(1, mydata, sizeof(mydata)-1, 0);
         Serial.println(F("Packet queued"));
     }
