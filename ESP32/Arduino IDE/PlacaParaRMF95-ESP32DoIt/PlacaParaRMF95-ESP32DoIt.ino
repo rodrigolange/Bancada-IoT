@@ -6,12 +6,20 @@
  *                                                          *
  *                                                          * 
  * string para teste com downlink: base64 aGVsbG8K          *
+ *                                                          *
+ * struct lmic_t definida em lmic.h                         *
+ * Inclui:                                                  *        
+ *   - LMIC.frame                                           *
+ *   - LMIC.dr                                              *
  ************************************************************/
 
 #include <lmic.h>
 #include <hal/hal.h>
 #include <SPI.h>
-#include<string>
+#include "mbedtls/base64.h"
+
+// Schedule TX every this many seconds (might become longer due to duty cycle limitations).
+unsigned TX_INTERVAL = 150;
 
 //#define ARDUINO_LMIC_CFG_NETWORK_TTN 1
 
@@ -26,11 +34,30 @@ void os_getDevEui (u1_t* buf) { memcpy_P(buf, DEVEUI, 8);}
 static const u1_t PROGMEM APPKEY[16] = { 0x01, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x01 };
 void os_getDevKey (u1_t* buf) {  memcpy_P(buf, APPKEY, 16);}
 
-static uint8_t mydata[] = "Lange";
-static osjob_t sendjob;
+float temperatura = 29.3;
+int mydataSize = 8;
+int16_t int_temp = (int16_t)(temperatura * 100);
 
-// Schedule TX every this many seconds (might become longer due to duty cycle limitations).
-const unsigned TX_INTERVAL = 120;
+uint8_t mydata[255];
+
+static osjob_t sendjob;
+unsigned char stringRecebida[255];
+unsigned char *ptr = (unsigned char*)malloc(255);
+unsigned int *outlen = 0;
+uint8_t currentDataRate;
+uint8_t currentTxPower;
+
+void prepare_txDataFrame(){
+  mydata[0] = int_temp >> 8;
+  mydata[1] = int_temp & 0xFF;
+  mydata[2] = 'L';
+  mydata[3] = 'a';
+  mydata[4] = 'n';
+  mydata[5] = 'g';
+  mydata[6] = 'e';
+  mydata[7] = '\0';  
+}
+
 
 // Pin mapping de acordo com a PCB do projeto
 const lmic_pinmap lmic_pins = {
@@ -104,17 +131,41 @@ void onEvent (ev_t ev) {
             break;
         case EV_TXCOMPLETE:
             Serial.println(F("EV_TXCOMPLETE (includes waiting for RX windows)"));
+
+              currentDataRate = LMIC.datarate;
+              currentTxPower = LMIC.txpow;
+            
+              Serial.print("Current Data Rate: ");
+              Serial.println(currentDataRate);
+              Serial.print("Current Tx Power: ");
+              Serial.println(currentTxPower);
+            
             if (LMIC.txrxFlags & TXRX_ACK)
               Serial.println(F("Received ack"));
+
             if (LMIC.dataLen) {
-              Serial.print(F("Received "));
+
+              Serial.print("Got ");
               Serial.print(LMIC.dataLen);
-              Serial.print(F(" bytes of payload"));
-              Serial.print(": Lmic frame: ");
-              Serial.write(LMIC.frame, LMIC.dataLen);
-              //String s((const __FlashStringHelper*) LMIC.frame);
-              Serial.println();
+              Serial.println(" bytes");
+
+              char part[LMIC.dataLen + 1];
+              strncpy(part, (const char *)LMIC.frame + LMIC.dataBeg, LMIC.dataLen);
+              part[LMIC.dataLen] = '\0';
+              Serial.println(part);
+
+              String comando = String(part);
+              if(comando == "aumentar"){   // YXVtZW50YXI=
+                Serial.print("Aumentando o periodo. Novo periodo: ");
+                TX_INTERVAL = TX_INTERVAL * 2;
+                Serial.println(TX_INTERVAL);
+              }else if(comando == "diminuir"){ //ZGlt aW51aXI=
+                Serial.println("Diminuindo o periodo. Novo periodo: ");
+                TX_INTERVAL = TX_INTERVAL / 2;
+                Serial.println(TX_INTERVAL);
+              }
             }
+            
             // Schedule next transmission
             os_setTimedCallback(&sendjob, os_getTime()+sec2osticks(TX_INTERVAL), do_send);
             break;
@@ -160,6 +211,7 @@ void do_send(osjob_t* j){
         Serial.println(F("OP_TXRXPEND, not sending"));
     } else {
         // Prepare upstream data transmission at the next possible time.
+        prepare_txDataFrame();
         LMIC_setTxData2(1, mydata, sizeof(mydata)-1, 0);
         Serial.println(F("Packet queued"));
     }
@@ -176,6 +228,10 @@ void setup() {
     os_init();
     // Reset the MAC state. Session and pending data transfers will be discarded.
     LMIC_reset();
+
+    LMIC_setAdrMode(1);
+    //LMIC_setDrTxpow(DR_SF10, 14);  // Set data rate to SF10 and power to 14 dBm
+
 
     // Start job (sending automatically starts OTAA too)
     do_send(&sendjob);
