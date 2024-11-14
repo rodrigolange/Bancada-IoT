@@ -90,7 +90,7 @@ sudo cp -r packet_forwarder/ /opt/lorawan/
 Criar o arquivo:
 
 ```
-sudo nano sudo nano /etc/init.d/lorapktfwd
+sudo nano /etc/init.d/lorapktfwd
 ```
 
 Colocar os comandos de inicialização no arquivo:
