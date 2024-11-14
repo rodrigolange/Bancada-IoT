@@ -2,16 +2,6 @@
 
 Baseado em https://www.chirpstack.io/docs/getting-started/debian-ubuntu.html
 
-## Estrutura básica de arquivos:
-
-```
-mkdir ~/lorawan
-
-mkdir ~/lorawan/chirpstack
-
-cd ~/lorawan/chirpstack
-```
-
 ## Criar base de dados no PostgreSQL:
 
 ```
