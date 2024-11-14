@@ -15,6 +15,7 @@ cd ~/lorawan/chirpstack
 ## Criar base de dados no PostgreSQL:
 
 ```
+sudo apt install postgresql
 sudo -u postgres psql
 ```
 
