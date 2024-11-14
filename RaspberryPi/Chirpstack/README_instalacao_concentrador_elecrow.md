@@ -90,7 +90,7 @@ sudo cp -r packet_forwarder/ /opt/lorawan/
 Criar o arquivo:
 
 ```
-sudo nano /etc/init.d/lorapktfwd
+/etc/systemd/system/lorapktfwd.service
 ```
 
 Colocar os comandos de inicialização no arquivo:
@@ -142,7 +142,7 @@ Reboot
 Direitos no arquivo:
 
 ```
-sudo chmod +x /etc/init.d/lorapktfwd
+sudo chmod +x /etc/systemd/system/lorapktfwd.service
 ```
 
 Instalar o serviço:
