@@ -192,7 +192,14 @@
 			"mix_gain": 14,
 			"rf_power": 27,
 			"dig_gain": 0
-		}
+		},
+		"tx_lut_16": {
+			"desc": "Alterar caso de erro de tx no log",
+			"pa_gain": 3,
+			"mix_gain": 14,
+			"rf_power": 30,
+			"dig_gain": 0
+		}		
 	},
 	"gateway_conf": {
 		"server_address": "localhost",
