@@ -3,9 +3,10 @@ import requests
 import threading
 
 class YRFetcher:
-    def __init__(self, lat, lon):
+    def __init__(self, horas, lat, lon):
         self.lat = lat
         self.lon = lon
+        self.horas = horas
         self.total_precipitation = 0.0
         self.lock = threading.Lock()
 
@@ -16,6 +17,7 @@ class YRFetcher:
         }
 
         local_precipitation = 0.0
+        contador = 0
 
         try:
             response = requests.get(url, headers=headers)
@@ -24,10 +26,13 @@ class YRFetcher:
             weather_data = response.json()
             timeseries = weather_data["properties"]["timeseries"]
 
-            for entry in timeseries:
-                if 'next_6_hours' in entry["data"]:
-                    precipitation = entry["data"]["next_6_hours"]["details"]["precipitation_amount"]
+            for entry in timeseries[:self.horas]:
+                if 'next_1_hours' in entry["data"]:
+                    precipitation = entry["data"]["next_1_hours"]["details"]["precipitation_amount"]
                     local_precipitation += precipitation
+                    contador += 1
+
+            print(f"contador de horas previsao = {contador}")
 
             with self.lock:
                 self.total_precipitation = round(local_precipitation, 2)

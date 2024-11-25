@@ -6,16 +6,29 @@ from google.protobuf.json_format import Parse
 
 from ChirpStackClient import ChirpStackClient
 
+from awscrt import io, mqtt, auth, http
+from awsiot import mqtt_connection_builder
+from datetime import datetime
+
+import threading
+import json
+
+import VariaveisCompartilhadas
+
 api_server = "10.0.0.30:8080"
 api_token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjaGlycHN0YWNrIiwiaXNzIjoiY2hpcnBzdGFjayIsInN1YiI6IjJjNWVhZ>"
 
 class ChirpStackHandler(BaseHTTPRequestHandler):
     json = True
 
-    def __init__(self, forecast, listaTransmissaoNodos, *args, **kwargs):
+    def __init__(self, forecast, listaTransmissaoNodos, VariaveisCompartilhadas, mqttClient, *args, **kwargs):
         self.forecast = forecast
         self.chirpStackClient = ChirpStackClient(api_server, api_token)
         self.listaNodos = listaTransmissaoNodos
+        self.VariaveisCompartilhadas = VariaveisCompartilhadas
+
+        self.mqttClient = mqttClient
+
         super().__init__(*args, **kwargs)
 
 
@@ -32,6 +45,9 @@ class ChirpStackHandler(BaseHTTPRequestHandler):
         elif query_args["event"][0] == "join":
             self.join(body)
 
+#        elif query_args["event"][0] == "txack":
+#            print("recebi txack")
+
     def up(self, body):
         up = self.unmarshal(body, integration.UplinkEvent())
         # aqui testa se tem payload. se nao tiver, ignora
@@ -42,20 +58,23 @@ class ChirpStackHandler(BaseHTTPRequestHandler):
             if dev_eui in self.listaNodos:
                 oldValue = self.listaNodos[dev_eui]
                 self.listaNodos[dev_eui] = oldValue + 1
-                #print("atualizei %s para %s" % (dev_eui, oldValue+1))
             else:
-                #print("nova entrada para %s" % (dev_eui))
                 self.listaNodos[dev_eui] = 1
 
             print("%s transmitiu %s vezes" %(dev_eui, self.listaNodos[dev_eui]))
 
-            precipitacao = self.forecast.get_total_precipitation()
-            self.chirpStackClient.send_downlink(device_eui=dev_eui, payload=precipitacao)
-            print("*********************************************************************")
+            # atualiza mensagens recebidas
+            # todo: timestamp e intervalo
+            with VariaveisCompartilhadas.lockDadosRecebidos:
+                self.VariaveisCompartilhadas.dadosRecebidos += 1
+            print("Mensagem local: apenas incrementei")
+            print("mensagens recebidas: %s" %self.VariaveisCompartilhadas.dadosRecebidos)
+            self.chirpStackClient.send_downlink(device_eui=dev_eui, payload=self.VariaveisCompartilhadas.indiceSatisfacao)
+#            print("*********************************************************************")
 
     def join(self, body):
         join = self.unmarshal(body, integration.JoinEvent())
-        #print("Device: %s joined with DevAddr: %s" % (join.device_info.dev_eui, join.dev_addr))
+#        print("Device: %s joined with DevAddr: %s" % (join.device_info.dev_eui, join.dev_addr))
 
     def unmarshal(self, body, pl):
         if self.json:

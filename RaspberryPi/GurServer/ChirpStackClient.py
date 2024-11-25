@@ -26,7 +26,7 @@ class ChirpStackClient:
 
         try:
             resp = self.client.Enqueue(req, metadata=self.auth_token)
-            print("Downlink sent successfully to %s. ID = %s" % (device_eui, resp.id))
+#            print("Downlink sent successfully to %s. ID = %s" % (device_eui, resp.id))
         except grpc.RpcError as e:
             print("Error sending downlink:", e.details())
             print("Status code:", e.code())
